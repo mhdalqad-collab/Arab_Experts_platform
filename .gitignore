@@ -48,3 +48,5 @@ next-env.d.ts
 # Safe configuration templates
 !.env.example
 !deployment/.env.example
+
+final-*.log

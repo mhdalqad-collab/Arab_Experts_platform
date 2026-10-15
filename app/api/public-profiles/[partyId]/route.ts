@@ -1,3 +1,4 @@
+import { getRuntime } from "@/app/lib/runtime";
 export const dynamic = "force-dynamic";
 
 const approvedStates = new Set(["approved", "active", "verified"]);
@@ -72,7 +73,7 @@ export async function GET(
   if (!/^[0-9a-z-]{8,80}$/i.test(partyId)) {
     return json({ error: "INVALID_PARTY_ID" }, 400);
   }
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
 

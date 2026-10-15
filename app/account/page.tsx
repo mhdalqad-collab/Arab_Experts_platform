@@ -30,7 +30,7 @@ export default async function AccountPage() {
             <strong>{user.displayName}</strong>
             <small>{user.email}</small>
           </span>
-          <a href={chatGPTSignOutPath("/")}>تسجيل الخروج</a>
+          <a href={chatGPTSignOutPath()}>تسجيل الخروج</a>
         </div>
       </header>
 

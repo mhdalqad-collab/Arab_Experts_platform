@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -10,7 +11,7 @@ function object(value: unknown) {
   return value && typeof value === "object" && !Array.isArray(value)
     ? value as Record<string, unknown> : {};
 }
-async function actorContext(db: D1Database) {
+async function actorContext(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   const account = await db.prepare("SELECT account_id, email FROM accounts WHERE email = ?1")
@@ -23,7 +24,7 @@ async function actorContext(db: D1Database) {
   ).bind(account.account_id).first<{ ok: number }>();
   return { ...account, isAdmin: Boolean(admin) };
 }
-async function ownedPartyIds(db: D1Database, accountId: string) {
+async function ownedPartyIds(db: SqlDatabase, accountId: string) {
   const rows = await db.prepare(
     "SELECT party_id FROM account_party_links WHERE account_id = ?1 AND status = 'ACTIVE'",
   ).bind(accountId).all<{ party_id: string }>();
@@ -58,7 +59,7 @@ function calculate(rows: Array<Record<string, unknown>>) {
   const confidenceScore = Math.round((rows.length / (rows.length + priorWeight)) * 100);
   return { compositeScore, confidenceScore, sampleCount: rows.length, dimensions };
 }
-async function reputationForParty(db: D1Database, partyId: string) {
+async function reputationForParty(db: SqlDatabase, partyId: string) {
   const reviews = await db.prepare(
     `SELECT pr.review_id, pr.project_id, pr.reviewer_role, pr.scores_json,
             pr.comment, pr.status, pr.submitted_at, sp.public_code AS project_code
@@ -89,7 +90,7 @@ async function reputationForParty(db: D1Database, partyId: string) {
 }
 
 export async function GET(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -116,7 +117,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -156,7 +157,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);

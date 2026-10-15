@@ -3,7 +3,7 @@ name: V113 quality gates
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, codex/godaddy-preparation]
   workflow_dispatch:
 
 permissions:
@@ -42,6 +42,14 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
+      - run: npm run build
+      - run: npm run test:production
+      - run: npm run db:migrate:web
+        env:
+          WEB_DATABASE_MIGRATION_URL: postgresql://eim_test:eim_test_password@127.0.0.1:5432/eim_test
+      - run: node --test tests/production-database-http.test.mjs
+        env:
+          HOSTING_TEST_DATABASE_URL: postgresql://eim_test:eim_test_password@127.0.0.1:5432/eim_test
       - run: npm run test:postgresql
       - run: npm run security:baseline
       - run: npm audit --omit=dev --audit-level=high

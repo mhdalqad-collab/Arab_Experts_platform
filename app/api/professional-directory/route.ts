@@ -1,3 +1,4 @@
+import { getRuntime } from "@/app/lib/runtime";
 export const dynamic = "force-dynamic";
 
 const kindByMembership: Record<string, string> = {
@@ -127,7 +128,7 @@ function specialization(
 }
 
 export async function GET(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const url = new URL(request.url);

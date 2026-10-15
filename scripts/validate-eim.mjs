@@ -69,7 +69,7 @@ const original = fs.readFileSync(path.join(app, "reference", "EIM_5.15.0_stable.
 const originalScripts = [...original.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1].trim());
 const rebuiltScripts = [
   fs.readFileSync(path.join(app, "js", "theme-init.js"), "utf8").trim(),
-  fs.readFileSync(path.join(app, "js", manifest.javascript[1]), "utf8").trim(),
+  fs.readFileSync(path.join(app, "js", manifest.javascript.find((file) => /^app\.bundle\.[a-f0-9]{12}\.js$/.test(file))), "utf8").trim(),
 ];
 if (originalScripts[0] !== rebuiltScripts[0]) errors.push("Theme initialization changed during extraction.");
 const normalize = (value) => value.replace(/\s+/g, " ").trim();

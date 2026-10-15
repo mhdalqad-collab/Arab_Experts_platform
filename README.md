@@ -1,8 +1,6 @@
 # شبكة الخبراء العرب — EIM 6 / V113 Backend Handoff R5
 
-> **GoDaddy migration in progress:** this repository is a source baseline, not yet
-> a verified GoDaddy deployment. Read [GODADDY_DEPLOYMENT.md](GODADDY_DEPLOYMENT.md)
-> for the compatibility assessment, completed checks, and remaining integration work.
+> **GoDaddy Node.js:** the deployment branch now uses Next.js, PostgreSQL-backed web APIs, OIDC sessions and private S3-compatible storage. See [GODADDY_DEPLOYMENT.md](GODADDY_DEPLOYMENT.md) for preview setup, required services and verification limits. The historical Sites instructions below describe the original archive.
 
 هذه حزمة مرشح V113، مبنية على الأساس التنفيذي V112 مع إغلاق أخطاء
 TypeScript وإضافة وثائق متطلبات MVP V113. نجاح الاختبارات المحلية لا يعني

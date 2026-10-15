@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ function json(body: unknown, status = 200) {
   });
 }
 
-async function reviewerContext(db: D1Database) {
+async function reviewerContext(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   const email = user.email.trim().toLowerCase();
@@ -18,7 +19,7 @@ async function reviewerContext(db: D1Database) {
     .bind(email)
     .first<{ account_id: string; email: string }>();
   if (!account) return null;
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const admins = String(workers.env.PLATFORM_ADMIN_EMAILS ?? "")
     .split(",")
     .map((item) => item.trim().toLowerCase());
@@ -47,7 +48,7 @@ async function reviewerContext(db: D1Database) {
 }
 
 export async function GET() {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const reviewer = await reviewerContext(db);
@@ -72,7 +73,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const reviewer = await reviewerContext(db);

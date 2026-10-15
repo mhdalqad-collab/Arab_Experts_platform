@@ -50,14 +50,14 @@ test("the application is not embedded in an iframe", () => {
 });
 
 test("boot cannot leave the navigation empty on a route-less URL or failed migration", () => {
-  const runtime = fs.readFileSync(path.join(app, "js", manifest.javascript[1]), "utf8");
+  const runtime = fs.readFileSync(path.join(app, "js", manifest.javascript.find((file) => /^app\.bundle\.[a-f0-9]{12}\.js$/.test(file))), "utf8");
   assert.match(runtime, /history\.replaceState\(null,'','#\/'\+current\)/);
   assert.match(runtime, /function safeBootTask\(/);
   assert.match(runtime, /render\(\);\s*safeBootTask\('unified-registry'/);
 });
 
 test("browser runtime filename is content-versioned to prevent stale caches", () => {
-  assert.match(manifest.javascript[1], /^app\.bundle\.[a-f0-9]{12}\.js$/);
+  assert.match(manifest.javascript.find((file) => /^app\.bundle\.[a-f0-9]{12}\.js$/.test(file)), /^app\.bundle\.[a-f0-9]{12}\.js$/);
   assert.match(manifest.runtimeCss, /^app\.styles\.[a-f0-9]{12}\.css$/);
 });
 

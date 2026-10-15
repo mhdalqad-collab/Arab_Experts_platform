@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ function object(value: unknown) {
   return value && typeof value === "object" && !Array.isArray(value)
     ? value as Record<string, unknown> : {};
 }
-async function actorContext(db: D1Database) {
+async function actorContext(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   return db.prepare("SELECT account_id, email FROM accounts WHERE email = ?1")
@@ -19,7 +20,7 @@ async function actorContext(db: D1Database) {
 function publicCode(prefix: string, count: number) {
   return `NAE-${prefix}-${new Date().getUTCFullYear()}-${String(count + 1).padStart(6, "0")}`;
 }
-async function projectAccess(db: D1Database, projectId: string, accountId: string) {
+async function projectAccess(db: SqlDatabase, projectId: string, accountId: string) {
   return db.prepare(
     `SELECT sp.project_id, sp.public_code, sp.title,
             sp.client_party_id, sp.provider_party_id,
@@ -35,7 +36,7 @@ async function projectAccess(db: D1Database, projectId: string, accountId: strin
   }>();
 }
 async function notifyParty(
-  db: D1Database,
+  db: SqlDatabase,
   partyId: string | null,
   actorAccountId: string,
   type: string,
@@ -52,7 +53,7 @@ async function notifyParty(
        title, message, entity_type, entity_id, action_route,
        priority, is_read, created_at
      )
-     SELECT lower(hex(randomblob(16))), l.account_id, NULL, ?1,
+     SELECT replace(gen_random_uuid()::text, '-', ''), l.account_id, NULL, ?1,
             ?2, ?3, 'PROJECT', ?4, '#/111', ?5, 0, ?6
        FROM account_party_links l
       WHERE l.party_id = ?7 AND l.status = 'ACTIVE'
@@ -61,7 +62,7 @@ async function notifyParty(
     type, title, message, projectId, priority, now, partyId, actorAccountId,
   ).run();
 }
-async function financeRows(db: D1Database, projectId: string) {
+async function financeRows(db: SqlDatabase, projectId: string) {
   const [schedules, invoices, payments] = await Promise.all([
     db.prepare(
       `SELECT pps.schedule_id, pps.milestone_id, pps.sequence, pps.percentage,
@@ -94,7 +95,7 @@ async function financeRows(db: D1Database, projectId: string) {
 }
 
 export async function GET(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -108,7 +109,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -170,7 +171,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);

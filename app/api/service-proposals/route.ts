@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ function object(value: unknown) {
   return value && typeof value === "object" && !Array.isArray(value)
     ? value as Record<string, unknown> : {};
 }
-async function actorContext(db: D1Database) {
+async function actorContext(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   const email = user.email.trim().toLowerCase();
@@ -30,7 +31,7 @@ const proposalTransitions: Record<string, string[]> = {
 };
 
 export async function GET() {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -64,7 +65,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -187,7 +188,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);

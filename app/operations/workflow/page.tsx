@@ -19,7 +19,7 @@ export default async function WorkflowOperationsPage() {
           <Link href="/reviews">مراجعات العضوية</Link>
           <Link href="/account">حسابي</Link>
           <Link href="/eim/index.html#/60">الموقع العام</Link>
-          <a href={chatGPTSignOutPath("/")}>خروج</a>
+          <a href={chatGPTSignOutPath()}>خروج</a>
         </nav>
       </header>
       <WorkflowOperations operatorEmail={user.email} />

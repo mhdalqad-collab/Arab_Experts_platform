@@ -18,7 +18,7 @@ export default async function ReviewsPage() {
           <Link href="/operations/workflow">مركز التشغيل</Link>
           <Link href="/account">حسابي</Link>
           <Link href="/eim/index.html#/60">الموقع العام</Link>
-          <a href={chatGPTSignOutPath("/")}>خروج</a>
+          <a href={chatGPTSignOutPath()}>خروج</a>
         </nav>
       </header>
       <ReviewQueue reviewerEmail={user.email} />

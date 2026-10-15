@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -10,11 +11,11 @@ function json(body: unknown, status = 200) {
 }
 
 async function database() {
-  const runtime = await import("cloudflare:workers");
+  const runtime = getRuntime();
   return runtime.env.DB;
 }
 
-async function currentAccount(db: D1Database) {
+async function currentAccount(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   return db

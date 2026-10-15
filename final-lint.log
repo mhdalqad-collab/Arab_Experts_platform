@@ -1,0 +1,4 @@
+
+> arab-experts-eim6@0.1.14 lint
+> eslint . --ignore-pattern dist --ignore-pattern backend/dist --ignore-pattern .next
+

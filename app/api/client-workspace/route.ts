@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -25,7 +26,7 @@ function safeObject(value: unknown) {
     : {};
 }
 
-async function context(db: D1Database) {
+async function context(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   const email = user.email.trim().toLowerCase();
@@ -44,7 +45,7 @@ async function context(db: D1Database) {
 }
 
 export async function GET() {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await context(db);
@@ -98,7 +99,7 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await context(db);

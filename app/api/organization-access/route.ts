@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase, type SqlStatement } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -19,11 +20,11 @@ function json(body: unknown, status = 200) {
 }
 
 async function database() {
-  const runtime = await import("cloudflare:workers");
+  const runtime = getRuntime();
   return runtime.env.DB;
 }
 
-async function currentAccount(db: D1Database) {
+async function currentAccount(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   const email = user.email.trim().toLowerCase();
@@ -41,7 +42,7 @@ async function currentAccount(db: D1Database) {
 }
 
 async function organizationRole(
-  db: D1Database,
+  db: SqlDatabase,
   accountId: string,
   partyId: string,
 ) {
@@ -68,7 +69,7 @@ function idValue(value: unknown) {
 }
 
 async function audit(
-  db: D1Database,
+  db: SqlDatabase,
   account: { account_id: string; email: string },
   eventType: string,
   payload: Record<string, unknown>,
@@ -296,7 +297,7 @@ export async function POST(request: Request) {
       .prepare("SELECT account_id FROM accounts WHERE email = ?1")
       .bind(email)
       .first<{ account_id: string }>();
-    const statements: D1PreparedStatement[] = [
+    const statements: SqlStatement[] = [
       db
         .prepare(
           `INSERT INTO organization_invitations (

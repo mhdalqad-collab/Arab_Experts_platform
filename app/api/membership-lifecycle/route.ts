@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -65,11 +66,11 @@ function json(body: unknown, status = 200) {
 }
 
 async function database() {
-  const runtime = await import("cloudflare:workers");
+  const runtime = getRuntime();
   return runtime.env.DB;
 }
 
-async function authenticatedAccount(db: D1Database) {
+async function authenticatedAccount(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   const email = user.email.trim().toLowerCase();
@@ -82,8 +83,8 @@ async function authenticatedAccount(db: D1Database) {
   return account ? { user, account } : null;
 }
 
-async function reviewerRole(db: D1Database, account: Account) {
-  const runtime = await import("cloudflare:workers");
+async function reviewerRole(db: SqlDatabase, account: Account) {
+  const runtime = getRuntime();
   const bootstrapAdmins = String(runtime.env.PLATFORM_ADMIN_EMAILS ?? "")
     .split(",")
     .map((email) => email.trim().toLowerCase())

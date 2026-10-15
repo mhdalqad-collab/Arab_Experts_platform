@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -10,7 +11,7 @@ function object(value: unknown) {
   return value && typeof value === "object" && !Array.isArray(value)
     ? value as Record<string, unknown> : {};
 }
-async function actorContext(db: D1Database) {
+async function actorContext(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   const account = await db.prepare("SELECT account_id, email FROM accounts WHERE email = ?1")
@@ -25,7 +26,7 @@ async function actorContext(db: D1Database) {
   ).bind(account.account_id).all<{ party_id: string }>();
   return { ...account, isAdmin: Boolean(admin), partyIds: parties.results.map((row) => row.party_id) };
 }
-async function complaintRows(db: D1Database, actor: { isAdmin: boolean; partyIds: string[] }) {
+async function complaintRows(db: SqlDatabase, actor: { isAdmin: boolean; partyIds: string[] }) {
   const filter = actor.isAdmin
     ? "1 = 1"
     : actor.partyIds.length
@@ -68,7 +69,7 @@ async function complaintRows(db: D1Database, actor: { isAdmin: boolean; partyIds
   return output;
 }
 async function addTransition(
-  db: D1Database, complaintId: string, from: string, to: string,
+  db: SqlDatabase, complaintId: string, from: string, to: string,
   action: string, note: string, accountId: string, now: string,
 ) {
   const count = await db.prepare(
@@ -85,7 +86,7 @@ async function addTransition(
   );
 }
 async function notifyComplaintParty(
-  db: D1Database,
+  db: SqlDatabase,
   partyId: string | null,
   actorAccountId: string,
   type: string,
@@ -102,7 +103,7 @@ async function notifyComplaintParty(
        title, message, entity_type, entity_id, action_route,
        priority, is_read, created_at
      )
-     SELECT lower(hex(randomblob(16))), l.account_id, NULL, ?1,
+     SELECT replace(gen_random_uuid()::text, '-', ''), l.account_id, NULL, ?1,
             ?2, ?3, 'COMPLAINT', ?4, '#/32', ?5, 0, ?6
        FROM account_party_links l
       WHERE l.party_id = ?7 AND l.status = 'ACTIVE'
@@ -112,7 +113,7 @@ async function notifyComplaintParty(
   ).run();
 }
 async function notifyComplaintAdmins(
-  db: D1Database,
+  db: SqlDatabase,
   actorAccountId: string,
   complaintId: string,
   code: string,
@@ -125,7 +126,7 @@ async function notifyComplaintAdmins(
        title, message, entity_type, entity_id, action_route,
        priority, is_read, created_at
      )
-     SELECT lower(hex(randomblob(16))), ar.account_id, NULL,
+     SELECT replace(gen_random_uuid()::text, '-', ''), ar.account_id, NULL,
             'QUALITY_COMPLAINT_SUBMITTED', 'شكوى جودة جديدة تحتاج الفرز',
             ?1, 'COMPLAINT', ?2, '#/32', 'HIGH', 0, ?3
        FROM account_roles ar
@@ -135,7 +136,7 @@ async function notifyComplaintAdmins(
 }
 
 export async function GET() {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -144,7 +145,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -204,7 +205,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);

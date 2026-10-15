@@ -1,3 +1,4 @@
+import { getRuntime } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -8,11 +9,11 @@ function json(body: unknown, status = 200) {
 
 export async function GET(
   _request: Request,
-  context: { params: Promise<{ id: string }> | { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
   const user = await getChatGPTUser();
   if (!user) return json({ error: "AUTHENTICATION_REQUIRED" }, 401);
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   const bucket = workers.env.BUCKET;
   if (!db || !bucket) return json({ error: "STORAGE_UNAVAILABLE" }, 503);

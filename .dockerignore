@@ -7,3 +7,9 @@ node_modules
 *.log
 tsconfig.tsbuildinfo
 work0910
+.next
+backend/dist
+.env
+.env.*
+!.env.example
+!deployment/.env.example

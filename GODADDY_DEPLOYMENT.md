@@ -1,100 +1,101 @@
-# GoDaddy deployment assessment
+# GoDaddy Node.js deployment
 
-Assessment date: 2026-10-15. Status: **source imported; migration required before deployment**.
+Target confirmed: GoDaddy Node.js Hosting, in a separate app from AES.
+Status: Node runtime implemented and locally tested; hosted services and GoDaddy deployment are pending.
 
-This repository is a separate project from the AES website. Do not reuse the AES app,
-database, secrets, domain, or deployment configuration. The V113 R5 reference archive
-was read only; changes are maintained in this GitHub repository.
+## What changed
 
-## What is implemented today
+- Root `npm run build` builds the EIM assets, backend TypeScript and a standard Next.js production app. `npm start` launches one public HTTP server on GoDaddy's `PORT`, bound to `0.0.0.0`.
+- All 22 web API route files use a PostgreSQL adapter instead of Cloudflare Worker bindings. Parameterized queries and atomic batches preserve the current API contracts.
+- The 22 original web-schema migrations are applied to an isolated PostgreSQL schema, `eim_web`, with checksums, a transaction and an advisory lock. Reruns do not reset saved content.
+- Private document bytes use an S3-compatible bucket. Metadata stays in PostgreSQL. Existing download authorization and upload-failure cleanup are retained. Do not enable public bucket access.
+- OIDC login replaces trusted platform identity headers. It uses authorization code flow, PKCE, state, nonce and ID-token signature checks. Accounts bind to issuer plus subject; an email collision is rejected rather than silently linking identities.
+- Browser sessions are random opaque cookies, hashed in PostgreSQL, expire after eight hours and are revoked on logout. Session cookies use HttpOnly, SameSite=Lax and Secure on HTTPS. Cookie-authenticated writes require the configured exact Origin.
+- Build-time Google Fonts downloads were removed. The EIM application's existing assets and styles remain; the account shell uses the browser font stack.
 
-| Component | Current implementation | Deployment implication |
-| --- | --- | --- |
-| Frontend | React 19, Next-compatible routes, Vinext/Vite and Cloudflare Worker build | The current output targets the old hosting runtime, not a verified GoDaddy Node app. |
-| Main interface | `public/eim/index.html`, 35 JavaScript source modules | Static rendering alone does not prove login or persistent workflows work. Some features retain browser-local state. |
-| Frontend APIs | 22 paths / 52 operations in `app/api` | They access Cloudflare D1 directly, with R2 for document storage. These bindings are unavailable in an ordinary Node process. |
-| Frontend identity | `app/chatgpt-auth.ts` reads platform-injected identity headers | GoDaddy needs a real session/login integration. Never trust client-supplied identity headers as authentication. |
-| Backend | Separate Node/TypeScript HTTP service, 82 paths / 90 operations | It must be started and routed explicitly; root `npm start` currently starts only Vinext. |
-| Backend database | PostgreSQL, 93 migration files | Keep the PostgreSQL domain model. Do not substitute the AES MySQL database or assume the D1 schema is interchangeable. |
-| Backend identity | OIDC issuer, JWKS, audience and provider code | Real provider configuration and end-to-end browser login are still required. |
-| Private files | Backend storage upload/download gateway contracts | Provision a private storage integration; a bare public folder or bucket URL does not implement the existing authorization protocol. |
-| Deployment templates | Separate frontend/backend/PostgreSQL containers | Compose templates are a starting point, not evidence that the frontend's Cloudflare dependencies work outside its original host. |
+The compatibility schema preserves the existing web data model. It is **not** a completed mapping to the separate enterprise `core`, `membership`, `finance` and other schemas in `database/postgresql`. Those backend domains remain distinct, as they were in the archive. Do not dual-write the same business records into both models. Consolidating them is a separate domain migration with reconciliation and acceptance tests.
 
-The archive already describes an incomplete D1-to-PostgreSQL transition in
-`docs/backend-handoff/01_ADR_POSTGRES_SOURCE_OF_TRUTH_AR.md`. D1 API payloads and
-PostgreSQL domain contracts need an explicit mapping; changing a connection string
-cannot complete that transition.
+No source archive files, AES resources, hosting accounts, DNS records or provider services have been modified.
 
-## Hosting choice
+## First: visual preview on GoDaddy
 
-Confirm whether the target is **GoDaddy Node.js Hosting** (the AES-style workflow)
-or **GoDaddy VPS** before selecting the runtime architecture.
+1. Create a **new** Node.js app and connect `mhdalqad-collab/Arab_Experts_platform`.
+2. Select branch **`codex/godaddy-preparation`** and repository root as the app root.
+3. Use `npm run build` and `npm start`. Choose a supported Node 22 release, at least 22.13; Node 24 is also supported by this code.
+4. Add the Preview secret `DEPLOYMENT_MODE=preview`.
+5. Update Preview. Check the Arabic interface and `/health/live`.
 
-For Node.js Hosting, the published requirements specify a root `package.json`, real
-`build` and `start` scripts, the assigned `PORT`, and installed build/runtime
-dependencies. The current scripts and Cloudflare bindings need adaptation. Verify
-PostgreSQL connectivity and availability for this particular subscription; the
-assessment has not established that a PostgreSQL service is included.
+In this mode the page shows a preview notice. Login, persistent APIs and the enterprise backend are disabled; `/health/ready` returns 503 by design. A Healthy hosting process only establishes that the preview is running. Do not enter real data into the browser-local demonstration flows.
 
-A VPS can host a multi-service deployment, but does not automatically supply D1,
-R2 or the old platform's identity service. Those integrations still need replacing
-or explicitly retaining behind authenticated services.
+## Enable persistent accounts
 
-No GoDaddy app, subscription, database, provider account, or domain has been
-created or modified as part of this assessment.
+A working deployment requires these separate services. Their credentials must be entered in GoDaddy Secrets, never in GitHub or chat.
 
-## Implementation sequence after the hosting choice
+| Setting | Purpose |
+| --- | --- |
+| `APP_ORIGIN` | Exact HTTPS origin of this environment, with no path; Preview and Publish normally differ. |
+| `WEB_DATABASE_URL` | Dedicated PostgreSQL connection URL. Verify network access from GoDaddy. |
+| `WEB_DATABASE_SSL` | Set to `require` for a remote database and use valid certificates. |
+| `WEB_DATABASE_POOL_MAX` | Optional, defaults to 5; keep within provider connection limits. |
+| `WEB_OIDC_ISSUER` | HTTPS OIDC issuer supporting discovery. |
+| `WEB_OIDC_CLIENT_ID`, `WEB_OIDC_CLIENT_SECRET` | Confidential web client credentials. |
+| `WEB_STORAGE_BUCKET` | Private bucket for documents. |
+| `WEB_STORAGE_REGION` | Provider region; `auto` for a compatible provider that requires it. |
+| `WEB_STORAGE_ENDPOINT` | HTTPS endpoint for an S3-compatible service; omit for standard AWS S3. |
+| `WEB_STORAGE_ACCESS_KEY_ID`, `WEB_STORAGE_SECRET_ACCESS_KEY` | Credentials restricted to the bucket's required object operations. |
+| `PLATFORM_ADMIN_EMAILS` | Optional comma-separated verified admin emails for existing role bootstrap. Leave blank until an administrator is deliberately assigned. |
+| `DEPLOYMENT_MODE` | Change from `preview` to `production` only after configuring these services and migrations. |
 
-1. Select the Node frontend runtime and one public entry point; expose the assigned
-   port, route the backend explicitly, and keep internal callback routes private.
-2. Implement browser login and verified server sessions using the selected identity
-   provider. Reject spoofed identity headers and validate redirects, CSRF, logout,
-   roles and step-up requirements.
-3. Map each existing frontend API to the PostgreSQL domain service while preserving
-   frontend response contracts. Identify missing backend capabilities rather than
-   silently disabling them or pretending local browser state is server persistence.
-4. Configure a separate PostgreSQL database and private object-storage gateway.
-   Rehearse migrations and restore on a disposable database before real data is used.
-5. Make production installation, build and startup independent of the old Sites
-   runtime. Bundle fonts or otherwise remove build-time font network dependencies.
-6. Run API, role, persistence, upload/download and production HTTP tests, then deploy
-   a separate GoDaddy Preview app and repeat them after restart/redeploy.
-7. Review the preview before publishing to the chosen domain. Record backup,
-   rollback, monitoring and provider setup instructions in this document.
+`godaddy.env.example` contains placeholders only. `production` is the default and fails at startup when required settings are missing.
 
-## Information still needed
+### Database setup
 
-- The GoDaddy hosting product and a separate app slot/server for this project.
-- The intended domain or subdomain (only needed before public launch).
-- Existing PostgreSQL, identity-provider and private storage services, if any.
-  Credentials must be entered in hosting secrets, not committed or pasted into chat.
-- Whether any real data exists in the previous D1/R2 deployment that needs migration.
+Use a separate PostgreSQL database. This repository does not assume GoDaddy provides PostgreSQL as part of the hosting subscription.
 
-## Validation performed during import
+From a trusted operator environment, install dependencies and set `WEB_DATABASE_MIGRATION_URL` to a schema-owner connection, then run:
 
-- Dependency lockfile install completed with `npm ci --ignore-scripts` on Node 24.11.
-- TypeScript check passed.
-- ESLint completed successfully using its Node CLI.
-- 111 frontend architecture/role-flow tests passed.
-- 52 backend unit/HTTP tests passed; these are not a live PostgreSQL integration test.
-- OpenAPI validation passed: 52 frontend and 90 backend operations, no backend drift.
-- Existing EIM static-asset validation passed.
-- Fixed file-URL conversion in three maintenance scripts so Windows paths and paths
-  containing spaces can be read correctly; no API behavior was changed.
-- Recognized secret-pattern scan found no matches before source import. Only
-  placeholder environment examples are tracked.
+```sh
+npm run db:migrate:web
+```
 
-The full Linux production build, container startup, live PostgreSQL integration,
-OIDC/storage-provider tests and GoDaddy Preview remain unverified. Local Docker's
-Linux engine was unavailable. Passing the checks above does not establish production
-readiness. Original archive readiness reports describe earlier runs, not this deployment.
+This command runs once for initial setup and again for controlled upgrades. It is never run implicitly during app startup or build. It creates `eim_web`, the compatibility tables, identity bindings and session tables; it does not apply the 93 enterprise backend migrations.
 
-## Official hosting references
+The runtime user needs CONNECT on this database, USAGE on `eim_web`, and SELECT/INSERT/UPDATE/DELETE on its tables. Use a separate migration owner; configure default privileges for future tables. Keep the runtime role unable to create/drop schemas. Set `WEB_DATABASE_URL` to the runtime connection, not the migration owner.
 
-- [GoDaddy Node.js app requirements](https://developer.godaddy.com/en/docs/api-users/hosting/app-requirements)
-- [GoDaddy Node.js upload and deployment guide](https://no.godaddy.com/help/upload-my-ai-generated-app-to-godaddy-nodejs-hosting-42987?lc=en-US)
+For any existing D1 records, perform an explicit export/import and reconcile counts, relationships and identity bindings first. The migration command creates schema; it does not copy D1 data or recover missing file bytes. Existing accounts are not automatically claimed by a matching email on first OIDC login.
 
-Generated `dist`, backend compiler output, dependency folders and real environment
-files are excluded from Git. `build/sites-vite-plugin.ts` is source code and is
-included. The original archive's inventory and checksum files describe that archive,
-not the evolving Git checkout.
+### Login provider
+
+Register `${APP_ORIGIN}/auth/callback` as an exact allowed callback. Configure a separate Preview callback/client as appropriate. Request scopes `openid email profile`. The ID token must include `sub`, `email`, and `email_verified=true`. Configure account registration and MFA at the identity provider.
+
+The old `/signin-with-chatgpt`, `/signout-with-chatgpt` and `/callback` paths are compatibility aliases; this implementation does not depend on ChatGPT sign-in. Logout revokes the application session and clears the browser's EIM draft state; it does not end the identity provider's global SSO session.
+
+### Private uploads
+
+Keep the bucket private and allow the server to get, put and delete objects. Test an upload, an authorized download and denial for another account, then redeploy and repeat. Do not store uploads inside the Git checkout. The archive's scan/verification workflow is preserved; this hosting change does not provision a malware scanner or make unverified documents verified.
+
+## Optional enterprise backend
+
+`ENABLE_DOMAIN_BACKEND=false` by default. To expose the existing `/v1/*` API in the same Node process, apply its separate PostgreSQL migrations and configure its existing `DATABASE_URL`, `DATABASE_SSL`, `APP_ENV=production`, `IDENTITY_*` and provider settings, then set `ENABLE_DOMAIN_BACKEND=true`. The backend handler is composed into the public server; no second public port is required. `/internal/*` stays blocked at that entry point.
+
+Browser OIDC sessions and enterprise bearer-token identities remain separate contracts. Enabling the backend does not automatically link their accounts or map web requests into enterprise records. Internal jobs/callbacks need a separate authenticated private execution path. Keep `POSTGRES_OPERATIONS_ACTIONS_ENABLED=false` and `POSTGRES_OPERATIONS_STEP_UP_READY=false` until that operational integration is validated.
+
+## Validation and launch
+
+Local verification includes TypeScript, lint, the 111 existing frontend tests, 52 backend tests, nine new hosting/database/security tests, and three real HTTP tests against the production Next.js build in preview mode. All 22 web migrations were exercised in PGlite's PostgreSQL engine, including idempotence, rollback and persistence after closing/reopening the database. All 300 non-interpolated API SQL statements were planned against that schema. Storage tests use a mocked S3 client.
+
+GitHub CI additionally has PostgreSQL 16 and a production HTTP integration test that creates sessions, saves a membership, restarts the app, verifies persistence and rejects cross-account access. Its result must be checked on the exact commit being deployed. The real identity provider callback, real storage provider and GoDaddy network/runtime are not proven by local tests.
+
+`/health/live` checks the process. `/health/ready` checks production mode and the web migration marker (plus backend readiness when enabled); it does not establish that an OIDC provider or storage bucket is reachable. Complete those provider checks separately.
+
+The archive still includes browser-local demonstration functionality (for example simulated finance/security/governance flows). Hosting conversion does not turn those into real payment, recovery, MFA or business services. Exercise the intended production workflows before accepting real users.
+
+Before publishing: verify login/logout, role separation, saved profiles, document authorization and persistence after restart/update; confirm backups and a restore rehearsal; then review the GoDaddy preview. Use separate Preview and Publish databases/buckets or deliberately account for any shared test data. Keep credentials and storage targets stable across deployments. Rolling back code must not delete database rows or objects.
+
+## References
+
+- [GoDaddy Node.js requirements](https://developer.godaddy.com/en/docs/api-users/hosting/app-requirements)
+- [Next.js custom server](https://nextjs.org/docs/app/guides/custom-server)
+- [OpenID Connect client](https://github.com/panva/openid-client)
+
+The legacy Sites/Cloudflare source and archive readiness reports remain for reference. `build:legacy` is not the GoDaddy build. Archive inventory/checksum files describe the original archive, not this evolving repository.

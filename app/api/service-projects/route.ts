@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ function object(value: unknown) {
   return value && typeof value === "object" && !Array.isArray(value)
     ? value as Record<string, unknown> : {};
 }
-async function actorContext(db: D1Database) {
+async function actorContext(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   return db.prepare(
@@ -26,7 +27,7 @@ function projectCode(sequence: number) {
   return `NAE-PRJ-${new Date().getUTCFullYear()}-${String(sequence).padStart(6, "0")}`;
 }
 
-async function projectRows(db: D1Database, accountId: string) {
+async function projectRows(db: SqlDatabase, accountId: string) {
   const projects = await db.prepare(
     `SELECT sp.project_id, sp.contract_id, sp.public_code, sp.title,
             sp.status, sp.progress, sp.payload_json, sp.revision, sp.updated_at
@@ -178,7 +179,7 @@ async function projectRows(db: D1Database, accountId: string) {
 }
 
 export async function GET() {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -187,7 +188,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -301,7 +302,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const workers = await import("cloudflare:workers");
+  const workers = getRuntime();
   const db = workers.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const actor = await actorContext(db);
@@ -771,7 +772,7 @@ export async function PATCH(request: Request) {
          title, message, entity_type, entity_id, action_route,
          priority, due_at, is_read, created_at
        )
-       SELECT lower(hex(randomblob(16))), l.account_id, NULL, ?1,
+       SELECT replace(gen_random_uuid()::text, '-', ''), l.account_id, NULL, ?1,
               ?2, ?3, 'PROJECT', ?4, '#/111', ?5, ?6, 0, ?7
          FROM account_party_links l
         WHERE l.party_id = ?8 AND l.status = 'ACTIVE'

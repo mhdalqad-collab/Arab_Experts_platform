@@ -45,7 +45,7 @@ html = html.replace(
 );
 fs.writeFileSync(path.join(app, manifest.entry), html);
 
-manifest.javascript = ["theme-init.js", runtimeFile];
+manifest.javascript = ["theme-init.js", "hosting-status.js", runtimeFile];
 manifest.runtimeCss = styleFile;
 manifest.generatedAt = new Date().toISOString();
 fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");

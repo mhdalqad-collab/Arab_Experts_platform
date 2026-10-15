@@ -1,3 +1,4 @@
+import { getRuntime, type SqlDatabase } from "@/app/lib/runtime";
 import { getChatGPTUser } from "../../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ function json(body: unknown, status = 200) {
   });
 }
 
-async function platformAdminContext(db: D1Database) {
+async function platformAdminContext(db: SqlDatabase) {
   const user = await getChatGPTUser();
   if (!user) return null;
   const email = user.email.trim().toLowerCase();
@@ -19,7 +20,7 @@ async function platformAdminContext(db: D1Database) {
     .first<{ account_id: string; email: string }>();
   if (!account) return null;
 
-  const runtime = await import("cloudflare:workers");
+  const runtime = getRuntime();
   const bootstrap = String(runtime.env.PLATFORM_ADMIN_EMAILS ?? "")
     .split(",")
     .map((value) => value.trim().toLowerCase())
@@ -49,7 +50,7 @@ async function platformAdminContext(db: D1Database) {
 }
 
 export async function GET() {
-  const runtime = await import("cloudflare:workers");
+  const runtime = getRuntime();
   const db = runtime.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const auth = await platformAdminContext(db);
@@ -151,7 +152,7 @@ const allowedCommands = new Set([
 ]);
 
 export async function POST(request: Request) {
-  const runtime = await import("cloudflare:workers");
+  const runtime = getRuntime();
   const db = runtime.env.DB;
   if (!db) return json({ error: "DATABASE_UNAVAILABLE" }, 503);
   const auth = await platformAdminContext(db);

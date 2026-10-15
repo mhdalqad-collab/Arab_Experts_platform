@@ -311,7 +311,12 @@ export default function AccountSetup({ identity }: { identity: Identity }) {
       let localCodes: string[] = [];
       let localClientType = "";
       try {
-      const stored = JSON.parse(localStorage.getItem("eim5") ?? "{}");
+      let stored = JSON.parse(localStorage.getItem("eim5") ?? "{}");
+      if (stored.accountEmail && stored.accountEmail !== identity.email) {
+        localStorage.removeItem("eim5");
+        localStorage.removeItem("eim5wiz");
+        stored = {};
+      }
         localCodes = memberships
         .filter((membership) =>
           (stored.memberships ?? []).includes(membership.label),
@@ -348,7 +353,7 @@ export default function AccountSetup({ identity }: { identity: Identity }) {
       }
     }
     void loadAccount();
-  }, []);
+  }, [identity.email]);
 
   useEffect(() => {
     void loadDashboard();

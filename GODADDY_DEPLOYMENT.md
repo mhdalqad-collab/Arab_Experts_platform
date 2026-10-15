@@ -20,7 +20,7 @@ No source archive files, AES resources, hosting accounts, DNS records or provide
 ## First: visual preview on GoDaddy
 
 1. Create a **new** Node.js app and connect `mhdalqad-collab/Arab_Experts_platform`.
-2. Select branch **`codex/godaddy-preparation`** and repository root as the app root.
+2. Select branch **`godaddy-preparation`** and repository root as the app root.
 3. Use `npm run build` and `npm start`. Choose a supported Node 22 release, at least 22.13; Node 24 is also supported by this code.
 4. Add the Preview secret `DEPLOYMENT_MODE=preview`.
 5. Update Preview. Check the Arabic interface and `/health/live`.

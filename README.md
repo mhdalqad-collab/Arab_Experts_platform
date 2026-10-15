@@ -1,5 +1,7 @@
 # شبكة الخبراء العرب — EIM 6 / V113 Backend Handoff R5
 
+> **Render free demo:** use the root `render.yaml` Blueprint or follow [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md) for manual setup and connecting your existing domain. It explicitly selects the Free plan and preview mode; real accounts and uploads require external services.
+
 > **GoDaddy Node.js:** the deployment branch now uses Next.js, PostgreSQL-backed web APIs, OIDC sessions and private S3-compatible storage. See [GODADDY_DEPLOYMENT.md](GODADDY_DEPLOYMENT.md) for preview setup, required services and verification limits. The historical Sites instructions below describe the original archive.
 
 هذه حزمة مرشح V113، مبنية على الأساس التنفيذي V112 مع إغلاق أخطاء

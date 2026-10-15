@@ -1,0 +1,19 @@
+# Free public demo. No database or paid service is provisioned here.
+services:
+  - type: web
+    name: arab-experts
+    runtime: node
+    plan: free
+    branch: godaddy-preparation
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /health/live
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DEPLOYMENT_MODE
+        value: preview
+      - key: ENABLE_DOMAIN_BACKEND
+        value: "false"

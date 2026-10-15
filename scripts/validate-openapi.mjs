@@ -1,8 +1,9 @@
 import { readdir, readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import { join, relative, sep } from "node:path";
 import { documentedOperations, extractBackendRoutes, renderBackendOpenApi } from "./backend-openapi-lib.mjs";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 const apiRoot = join(root, "app", "api");
 const specPath = join(root, "openapi", "eim-v113-r5.yaml");
 const backendSpecPath = join(root, "openapi", "eim-v113-backend-r5.yaml");

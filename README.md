@@ -1,5 +1,9 @@
 # شبكة الخبراء العرب — EIM 6 / V113 Backend Handoff R5
 
+> **GoDaddy migration in progress:** this repository is a source baseline, not yet
+> a verified GoDaddy deployment. Read [GODADDY_DEPLOYMENT.md](GODADDY_DEPLOYMENT.md)
+> for the compatibility assessment, completed checks, and remaining integration work.
+
 هذه حزمة مرشح V113، مبنية على الأساس التنفيذي V112 مع إغلاق أخطاء
 TypeScript وإضافة وثائق متطلبات MVP V113. نجاح الاختبارات المحلية لا يعني
 القبول الإنتاجي قبل PostgreSQL integration وE2E والأمن والأداء وUAT.

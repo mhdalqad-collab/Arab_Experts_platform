@@ -1,9 +1,10 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 const run = (name, command, args) => {
   const result = spawnSync(command, args, { cwd: root, encoding: "utf8", shell: false });
   return { name, status: result.status === 0 ? "PASSED" : "FAILED", detail: (result.stdout || result.stderr).trim().split("\n").slice(-1)[0] || `exit ${result.status}` };

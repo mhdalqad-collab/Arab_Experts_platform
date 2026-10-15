@@ -1,0 +1,12 @@
+BEGIN;
+DROP FUNCTION IF EXISTS professional.transition_published_profile_lifecycle(uuid,uuid,uuid,varchar,text,varchar);
+DROP TRIGGER IF EXISTS trg_protect_published_profile_materialization ON professional.published_profile_materializations;
+DROP FUNCTION IF EXISTS professional.protect_published_profile_materialization();
+ALTER FUNCTION professional.protect_published_profile_materialization_pre0820() RENAME TO protect_published_profile_materialization;
+CREATE TRIGGER trg_protect_published_profile_materialization BEFORE UPDATE OR DELETE ON professional.published_profile_materializations FOR EACH ROW EXECUTE FUNCTION professional.protect_published_profile_materialization();
+DROP TABLE IF EXISTS professional.publication_lifecycle_history;
+ALTER TABLE professional.published_profile_materializations DROP COLUMN IF EXISTS lifecycle_changed_at,DROP COLUMN IF EXISTS lifecycle_changed_by_party_id,DROP COLUMN IF EXISTS lifecycle_reason,DROP COLUMN IF EXISTS lifecycle_status_code;
+DELETE FROM governance.role_permissions WHERE permission_id=(SELECT permission_id FROM governance.permissions WHERE permission_code='professional.publish.lifecycle');
+DELETE FROM governance.permissions WHERE permission_code='professional.publish.lifecycle';
+DELETE FROM integration.schema_migrations WHERE migration_name='0820_v113_backend_publication_lifecycle';
+COMMIT;

@@ -1,0 +1,152 @@
+openapi: 3.1.0
+info:
+  title: EIM Platform API
+  version: 1.0.0-r5
+  description: >-
+    Baseline contract for EIM V113 Backend Handoff R5. PostgreSQL 16 is the
+    production system of record. Endpoint-specific schemas must be tightened
+    before each domain exits implementation.
+x-eim-backend-contract: ./eim-v113-backend-r5.yaml
+servers:
+  - url: /api
+    description: Same-origin application API
+security:
+  - oidc: []
+tags:
+  - name: Account
+  - name: Membership
+  - name: Documents
+  - name: Directory
+  - name: Client
+  - name: Matching
+  - name: Delivery
+  - name: Finance
+  - name: Quality
+  - name: Operations
+paths:
+  /account:
+    get: {tags: [Account], operationId: getAccount, responses: {'200': {$ref: '#/components/responses/Success'}, '401': {$ref: '#/components/responses/Unauthorized'}}}
+    put: {tags: [Account], operationId: updateAccount, requestBody: {$ref: '#/components/requestBodies/JsonCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '400': {$ref: '#/components/responses/BadRequest'}, '401': {$ref: '#/components/responses/Unauthorized'}}}
+  /account-dashboard:
+    get: {tags: [Account], operationId: getAccountDashboard, responses: {'200': {$ref: '#/components/responses/Success'}, '401': {$ref: '#/components/responses/Unauthorized'}}}
+    patch: {tags: [Account], operationId: updateDashboardItem, requestBody: {$ref: '#/components/requestBodies/JsonCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '400': {$ref: '#/components/responses/BadRequest'}}}
+  /party-profile:
+    get: {tags: [Account], operationId: getPartyProfile, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    put: {tags: [Account], operationId: savePartyProfile, requestBody: {$ref: '#/components/requestBodies/JsonCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '400': {$ref: '#/components/responses/BadRequest'}}}
+    patch: {tags: [Account], operationId: activatePartyProfile, requestBody: {$ref: '#/components/requestBodies/JsonCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /organization-access:
+    get: {tags: [Account], operationId: getOrganizationAccess, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Account], operationId: executeOrganizationAccessCommand, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '403': {$ref: '#/components/responses/Forbidden'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /membership-profiles:
+    get: {tags: [Membership], operationId: getMembershipProfiles, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    put: {tags: [Membership], operationId: saveMembershipProfile, requestBody: {$ref: '#/components/requestBodies/JsonCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '422': {$ref: '#/components/responses/ValidationError'}}}
+  /membership-lifecycle:
+    get: {tags: [Membership], operationId: getMembershipLifecycle, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Membership], operationId: executeMembershipCommand, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '403': {$ref: '#/components/responses/Forbidden'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /documents:
+    get: {tags: [Documents], operationId: listDocuments, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post:
+      tags: [Documents]
+      operationId: uploadDocuments
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: {type: object, required: [files, category], properties: {files: {type: array, items: {type: string, format: binary}, maxItems: 10}, category: {type: string}, membershipCode: {type: string}, confidentiality: {type: string, enum: [PRIVATE, RESTRICTED, PUBLIC]}}}
+      responses: {'201': {$ref: '#/components/responses/Success'}, '413': {$ref: '#/components/responses/BadRequest'}, '422': {$ref: '#/components/responses/ValidationError'}}
+    patch: {tags: [Documents], operationId: updateDocumentMetadata, requestBody: {$ref: '#/components/requestBodies/JsonCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '403': {$ref: '#/components/responses/Forbidden'}}}
+  /documents/{id}:
+    get:
+      tags: [Documents]
+      operationId: downloadDocument
+      parameters: [{$ref: '#/components/parameters/Id'}]
+      responses: {'200': {description: Authorized file stream}, '403': {$ref: '#/components/responses/Forbidden'}, '404': {$ref: '#/components/responses/NotFound'}}
+  /document-verifications:
+    get: {tags: [Documents], operationId: listDocumentVerifications, responses: {'200': {$ref: '#/components/responses/Success'}, '403': {$ref: '#/components/responses/Forbidden'}}}
+    post: {tags: [Documents], operationId: decideDocumentVerification, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '403': {$ref: '#/components/responses/Forbidden'}}}
+  /professional-directory:
+    get:
+      tags: [Directory]
+      operationId: searchProfessionalDirectory
+      security: []
+      parameters: [{$ref: '#/components/parameters/Query'}, {$ref: '#/components/parameters/Cursor'}, {$ref: '#/components/parameters/Limit'}]
+      responses: {'200': {$ref: '#/components/responses/Success'}}
+  /public-profiles/{partyId}:
+    get:
+      tags: [Directory]
+      operationId: getPublicProfile
+      security: []
+      parameters: [{$ref: '#/components/parameters/PartyId'}]
+      responses: {'200': {$ref: '#/components/responses/Success'}, '404': {$ref: '#/components/responses/NotFound'}}
+  /client-workspace:
+    get: {tags: [Client], operationId: getClientWorkspace, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    put: {tags: [Client], operationId: saveClientWorkspace, requestBody: {$ref: '#/components/requestBodies/JsonCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '422': {$ref: '#/components/responses/ValidationError'}}}
+  /service-requests:
+    get: {tags: [Client], operationId: listServiceRequests, parameters: [{$ref: '#/components/parameters/Cursor'}, {$ref: '#/components/parameters/Limit'}], responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Client], operationId: createServiceRequest, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'201': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}, '422': {$ref: '#/components/responses/ValidationError'}}}
+    patch: {tags: [Client], operationId: transitionServiceRequest, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /matching-runs:
+    get: {tags: [Matching], operationId: listMatchingRuns, parameters: [{$ref: '#/components/parameters/Cursor'}, {$ref: '#/components/parameters/Limit'}], responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Matching], operationId: createMatchingRun, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'201': {$ref: '#/components/responses/Success'}, '422': {$ref: '#/components/responses/ValidationError'}}}
+    patch: {tags: [Matching], operationId: decideMatchingResult, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /service-proposals:
+    get: {tags: [Delivery], operationId: listServiceProposals, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Delivery], operationId: createServiceProposal, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'201': {$ref: '#/components/responses/Success'}, '422': {$ref: '#/components/responses/ValidationError'}}}
+    patch: {tags: [Delivery], operationId: transitionServiceProposal, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /service-contracts:
+    get: {tags: [Delivery], operationId: listServiceContracts, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Delivery], operationId: createServiceContract, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'201': {$ref: '#/components/responses/Success'}, '422': {$ref: '#/components/responses/ValidationError'}}}
+    patch: {tags: [Delivery], operationId: transitionServiceContract, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /service-projects:
+    get: {tags: [Delivery], operationId: listServiceProjects, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Delivery], operationId: createServiceProjectRecord, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'201': {$ref: '#/components/responses/Success'}, '422': {$ref: '#/components/responses/ValidationError'}}}
+    patch: {tags: [Delivery], operationId: updateServiceProjectRecord, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /project-finance:
+    get: {tags: [Finance], operationId: getProjectFinance, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Finance], operationId: createFinanceRecord, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'201': {$ref: '#/components/responses/Success'}, '422': {$ref: '#/components/responses/ValidationError'}}}
+    patch: {tags: [Finance], operationId: transitionFinanceRecord, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /project-closure:
+    get: {tags: [Delivery], operationId: getProjectClosure, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Delivery], operationId: createClosureRecord, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'201': {$ref: '#/components/responses/Success'}, '422': {$ref: '#/components/responses/ValidationError'}}}
+    patch: {tags: [Delivery], operationId: transitionProjectClosure, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /reputation:
+    get: {tags: [Quality], operationId: getReputation, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Quality], operationId: createReputationRecord, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'201': {$ref: '#/components/responses/Success'}}}
+    patch: {tags: [Quality], operationId: decideReputationRecord, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '403': {$ref: '#/components/responses/Forbidden'}}}
+  /quality-complaints:
+    get: {tags: [Quality], operationId: listQualityComplaints, responses: {'200': {$ref: '#/components/responses/Success'}}}
+    post: {tags: [Quality], operationId: createQualityComplaint, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'201': {$ref: '#/components/responses/Success'}}}
+    patch: {tags: [Quality], operationId: transitionQualityComplaint, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '409': {$ref: '#/components/responses/Conflict'}}}
+  /workflow-operations:
+    get: {tags: [Operations], operationId: getWorkflowOperations, responses: {'200': {$ref: '#/components/responses/Success'}, '403': {$ref: '#/components/responses/Forbidden'}}}
+    post: {tags: [Operations], operationId: executeWorkflowOperation, requestBody: {$ref: '#/components/requestBodies/IdempotentCommand'}, responses: {'200': {$ref: '#/components/responses/Success'}, '403': {$ref: '#/components/responses/Forbidden'}, '409': {$ref: '#/components/responses/Conflict'}}}
+components:
+  securitySchemes:
+    oidc: {type: openIdConnect, openIdConnectUrl: 'https://identity.example.invalid/.well-known/openid-configuration'}
+  parameters:
+    Id: {name: id, in: path, required: true, schema: {type: string, format: uuid}}
+    PartyId: {name: partyId, in: path, required: true, schema: {type: string, format: uuid}}
+    Query: {name: q, in: query, schema: {type: string, maxLength: 200}}
+    Cursor: {name: cursor, in: query, schema: {type: string, maxLength: 500}}
+    Limit: {name: limit, in: query, schema: {type: integer, minimum: 1, maximum: 100, default: 20}}
+  requestBodies:
+    JsonCommand:
+      required: true
+      content: {application/json: {schema: {$ref: '#/components/schemas/Command'}}}
+    IdempotentCommand:
+      required: true
+      content: {application/json: {schema: {$ref: '#/components/schemas/IdempotentCommand'}}}
+  responses:
+    Success: {description: Successful response, content: {application/json: {schema: {$ref: '#/components/schemas/SuccessEnvelope'}}}}
+    BadRequest: {description: Invalid request, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}}}}
+    Unauthorized: {description: Authentication required, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}}}}
+    Forbidden: {description: Insufficient permission, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}}}}
+    NotFound: {description: Resource not found, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}}}}
+    Conflict: {description: Version or state conflict, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}}}}
+    ValidationError: {description: Domain validation failed, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}}}}
+  schemas:
+    Command: {type: object, additionalProperties: true, properties: {action: {type: string, maxLength: 80}, correlationId: {type: string, maxLength: 120}}}
+    IdempotentCommand: {allOf: [{$ref: '#/components/schemas/Command'}, {type: object, required: [idempotencyKey], properties: {idempotencyKey: {type: string, minLength: 8, maxLength: 160}, rowVersion: {type: integer, minimum: 1}}}]}
+    SuccessEnvelope: {type: object, additionalProperties: true, properties: {data: {}, meta: {$ref: '#/components/schemas/ResponseMeta'}}}
+    ErrorEnvelope: {type: object, required: [error], properties: {error: {type: string}, message: {type: string}, correlationId: {type: string}, details: {type: array, items: {type: object, additionalProperties: true}}}}
+    ResponseMeta: {type: object, properties: {correlationId: {type: string}, nextCursor: {type: [string, 'null']}}}

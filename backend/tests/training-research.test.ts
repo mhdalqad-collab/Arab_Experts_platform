@@ -1,0 +1,3 @@
+import assert from"node:assert/strict";import test from"node:test";import{parseResearch,parseTraining}from"../src/training-research.js";
+test("training experience validates rating duration and participants",()=>{assert.equal(parseTraining({courseNameAr:"دورة",courseLevelCode:"ADVANCED",durationHours:12,ratingValue:4.5}).ratingValue,4.5);assert.throws(()=>parseTraining({courseNameAr:"دورة",courseLevelCode:"ADVANCED",ratingValue:6}));});
+test("research experience validates role and chronological period",()=>{assert.equal(parseResearch({researchTitleAr:"بحث",researchRoleCode:"LEAD",startedAt:"2024-01-01"}).researchRoleCode,"LEAD");assert.throws(()=>parseResearch({researchTitleAr:"بحث",researchRoleCode:"LEAD",startedAt:"2025-01-01",endedAt:"2024-01-01"}));});

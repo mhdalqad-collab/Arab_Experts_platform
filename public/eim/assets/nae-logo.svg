@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" role="img" aria-labelledby="title desc">
+  <title id="title">شعار شبكة الخبراء العرب</title>
+  <desc id="desc">سبع نقاط مترابطة حول نواة معرفية</desc>
+  <defs>
+    <linearGradient id="gold" x1="12" y1="8" x2="60" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F2D994"/>
+      <stop offset="1" stop-color="#B98A2E"/>
+    </linearGradient>
+  </defs>
+  <circle cx="36" cy="36" r="34" fill="#0A2540"/>
+  <g fill="none" stroke="url(#gold)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M36 12 55 22 60 43 46 59 25 59 12 43 17 22Z" opacity=".72"/>
+    <path d="m36 20 14 8v16l-14 8-14-8V28Z"/>
+    <path d="M36 20v32M22 28l28 16M50 28 22 44" opacity=".58"/>
+  </g>
+  <g fill="#E0B85D" stroke="#0A2540" stroke-width="2">
+    <circle cx="36" cy="12" r="4"/><circle cx="55" cy="22" r="4"/>
+    <circle cx="60" cy="43" r="4"/><circle cx="46" cy="59" r="4"/>
+    <circle cx="25" cy="59" r="4"/><circle cx="12" cy="43" r="4"/>
+    <circle cx="17" cy="22" r="4"/>
+  </g>
+  <path d="m36 27 8 9-8 9-8-9Z" fill="#F6E7BC"/>
+</svg>

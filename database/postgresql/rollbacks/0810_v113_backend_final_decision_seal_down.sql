@@ -1,0 +1,11 @@
+BEGIN;
+DROP FUNCTION IF EXISTS professional.search_public_directory(text,varchar,varchar,varchar,varchar,integer,integer);
+ALTER FUNCTION professional.search_public_directory_pre0810(text,varchar,varchar,varchar,varchar,integer,integer) RENAME TO search_public_directory;
+DROP FUNCTION IF EXISTS professional.decide_profile_publication(uuid,uuid,uuid,varchar,text,varchar);
+ALTER FUNCTION professional.decide_profile_publication_pre0810(uuid,uuid,uuid,varchar,text,varchar) RENAME TO decide_profile_publication;
+ALTER TABLE professional.profile_publication_requests DROP COLUMN IF EXISTS published_materialization_id,DROP COLUMN IF EXISTS decision_seal_hash_sha256;
+DROP TRIGGER IF EXISTS trg_protect_published_profile_materialization ON professional.published_profile_materializations;
+DROP FUNCTION IF EXISTS professional.protect_published_profile_materialization();
+DROP TABLE IF EXISTS professional.published_profile_materializations;
+DELETE FROM integration.schema_migrations WHERE migration_name='0810_v113_backend_final_decision_seal';
+COMMIT;

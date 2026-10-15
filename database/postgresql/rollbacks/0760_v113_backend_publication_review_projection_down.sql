@@ -1,0 +1,1 @@
+BEGIN;ALTER TABLE professional.profile_publication_requests DROP COLUMN IF EXISTS review_context_snapshot;DELETE FROM integration.schema_migrations WHERE migration_name='0760_v113_backend_publication_review_projection';COMMIT;

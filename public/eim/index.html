@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="شبكة الخبراء العرب — نموذج EIM معياري قابل للصيانة">
+  <title>EIM 6.3 | شبكة الخبراء العرب</title>
+  <link rel="icon" href="./assets/nae-logo.svg" type="image/svg+xml">
+  <script src="./js/theme-init.js"></script>
+  <link rel="stylesheet" href="./css/app.styles.557ebcf1210b.css">
+</head>
+<body>
+<a class="skip-link" href="#main-content">تجاوز القائمة والانتقال إلى المحتوى</a>
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand" role="button" tabindex="0" aria-label="الانتقال إلى الصفحة الرئيسية" style="cursor:pointer" onclick="go(60)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go(60)}" title="الصفحة الرئيسية">
+      <div class="mark brandmark"><img src="./assets/nae-logo.svg" alt="" width="40" height="40"></div>
+      <div><b>شبكة الخبراء العرب</b><small>عقول عربية… أثر عالمي</small></div>
+    </div>
+    <button class="ctxbtn" onclick="go(3)"><span id="ctxname">خبير مستقل</span> ▾</button>
+    <nav class="nav" id="nav"></nav>
+    <div class="userchip">
+      <div class="av" id="uav">؟</div>
+      <div style="min-width:0;flex:1"><b id="uname">زائر</b><small id="urole">لم يسجل الدخول</small></div>
+      <button title="تسجيل الدخول / الخروج" id="authbtn" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#c3d3e4;font-size:11px;padding:5px 10px;border-radius:8px" onclick="toggleAuth()">دخول</button>
+      <button title="إعادة تعيين المنظومة" style="background:transparent;border:0;color:#7e96b3;font-size:13px;padding:4px" onclick="resetAll()">⟲</button>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button class="menubtn" id="menubtn" aria-label="فتح قائمة التنقل" aria-controls="sidebar" aria-expanded="false" onclick="toggleSidebar()">☰</button>
+      <button class="backbtn" id="globalBack" aria-label="العودة إلى الصفحة السابقة" onclick="goBack()">→ <span>الصفحة السابقة</span></button>
+      <div class="crumb">EIM / <b id="crumb">…</b></div>
+      <div class="sp"></div>
+      <button class="searchbtn" onclick="go(5)">⌕ بحث موحد في المنصة… <kbd>/</kbd></button>
+      <button class="themebtn" id="themebtn" type="button" onclick="toggleTheme()" aria-label="تفعيل الوضع الداكن" aria-pressed="false" title="تفعيل الوضع الداكن"><span class="sun" aria-hidden="true">☀</span><span class="moon" aria-hidden="true">☾</span></button>
+      <div class="savepill"><i class="pulse"></i><span id="saved">جاهز</span></div>
+    </header>
+    <main class="view" id="main-content" tabindex="-1"><div class="wrap" id="view"></div></main>
+  </div>
+</div>
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeOverlay()"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script src="./js/app.bundle.068a5f33925a.js"></script>
+  <script src="./js/design-quality.v1.js"></script>
+</body>
+</html>

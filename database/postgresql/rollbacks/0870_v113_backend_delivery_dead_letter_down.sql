@@ -1,0 +1,10 @@
+BEGIN;
+DROP VIEW IF EXISTS communication.v_delivery_operations_dashboard;
+DROP FUNCTION IF EXISTS communication.resolve_dead_letter_message(uuid,uuid,uuid,varchar,text,varchar);
+DROP TRIGGER IF EXISTS trg_capture_dead_letter_message ON communication.outbound_messages;
+DROP FUNCTION IF EXISTS communication.capture_dead_letter_message();
+DROP TABLE IF EXISTS communication.dead_letter_messages;
+DELETE FROM governance.role_permissions WHERE permission_id=(SELECT permission_id FROM governance.permissions WHERE permission_code='communication.delivery.operations');
+DELETE FROM governance.permissions WHERE permission_code='communication.delivery.operations';
+DELETE FROM integration.schema_migrations WHERE migration_name='0870_v113_backend_delivery_dead_letter';
+COMMIT;

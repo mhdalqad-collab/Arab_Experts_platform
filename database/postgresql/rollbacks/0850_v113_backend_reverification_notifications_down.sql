@@ -1,0 +1,13 @@
+BEGIN;
+DROP FUNCTION IF EXISTS professional.acknowledge_publication_reverification_alert(uuid,uuid,uuid,varchar);
+DROP FUNCTION IF EXISTS professional.evaluate_publication_reverification(uuid,uuid,date,varchar);
+ALTER FUNCTION professional.evaluate_publication_reverification_pre0850(uuid,uuid,date,varchar) RENAME TO evaluate_publication_reverification;
+DROP FUNCTION IF EXISTS professional.queue_publication_reverification_notifications(uuid,uuid,date,varchar);
+DROP TABLE IF EXISTS professional.publication_reverification_notification_links;
+ALTER TABLE professional.publication_reverification_alerts DROP COLUMN IF EXISTS acknowledged_by_party_id,DROP COLUMN IF EXISTS acknowledged_at;
+DELETE FROM communication.delivery_attempts WHERE outbound_message_id IN(SELECT outbound_message_id FROM communication.outbound_messages WHERE notification_topic_id=(SELECT notification_topic_id FROM communication.notification_topics WHERE topic_code='PROFESSIONAL_REVERIFICATION'));
+DELETE FROM communication.outbound_messages WHERE notification_topic_id=(SELECT notification_topic_id FROM communication.notification_topics WHERE topic_code='PROFESSIONAL_REVERIFICATION');
+DELETE FROM communication.message_templates WHERE template_code='PROFESSIONAL_REVERIFICATION_ALERT';
+DELETE FROM communication.notification_topics WHERE topic_code='PROFESSIONAL_REVERIFICATION';
+DELETE FROM integration.schema_migrations WHERE migration_name='0850_v113_backend_reverification_notifications';
+COMMIT;

@@ -1,0 +1,25 @@
+/* تحسينات جودة الواجهة — لا تغيّر البيانات أو مسارات العمل */
+.skip-link{
+  position:fixed;inset-inline-start:18px;top:12px;z-index:10000;
+  padding:10px 16px;border-radius:10px;background:#fff;color:#0b2947;
+  border:2px solid #c9a24b;box-shadow:0 8px 28px rgba(5,31,56,.22);
+  transform:translateY(-160%);transition:transform .18s ease;font-weight:800
+}
+.skip-link:focus{transform:translateY(0)}
+#main-content:focus{outline:none}
+#main-content:focus-visible{outline:3px solid rgba(201,162,75,.55);outline-offset:-4px}
+.nav button[aria-current="page"]{box-shadow:inset -3px 0 0 var(--gold,#c9a24b)}
+.ctl[aria-invalid="true"]{border-color:#c73d4d!important;box-shadow:0 0 0 3px rgba(199,61,77,.12)!important}
+.field-error{display:block;margin-top:5px;color:#a92435;font-size:11px;font-weight:700}
+@media(max-width:760px){
+  button,.btn,.ctxbtn,.nav button,.themebtn,.menubtn,.backbtn{min-height:42px}
+  .topbar{gap:7px}.topbar .searchbtn{min-width:42px}
+  .pagehead .acts,.wizfoot{gap:8px}
+  .pagehead .acts .btn,.wizfoot .btn{min-height:44px}
+}
+@media(prefers-contrast:more){
+  :root{--muted:#4d6072}
+  .card,.ctl,.btn{border-width:2px}
+  .hint,small{color:#40566b}
+}
+@media(prefers-reduced-motion:reduce){.skip-link{transition:none}}

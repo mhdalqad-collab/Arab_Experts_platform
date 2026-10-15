@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-08-02T14:21:04.468Z",
+  "release": "V113 R5 Production Candidate baseline",
+  "status": "PREPARED_PENDING_EXTERNAL_VALIDATION",
+  "inventory": {
+    "postgresqlMigrations": 93,
+    "backendPaths": 82,
+    "backendOperations": 90,
+    "sameOriginPaths": 22,
+    "sameOriginOperations": 52
+  },
+  "localGates": [
+    {
+      "name": "OpenAPI drift and schema gates",
+      "status": "PASSED",
+      "detail": "}"
+    },
+    {
+      "name": "Security baseline",
+      "status": "PASSED",
+      "detail": "Security baseline passed."
+    },
+    {
+      "name": "Deployment scripts syntax",
+      "status": "PASSED",
+      "detail": "exit 0"
+    },
+    {
+      "name": "Required release artifacts",
+      "status": "PASSED",
+      "detail": "7 artifacts present"
+    }
+  ],
+  "externalGates": [
+    {
+      "name": "CI hosted workflow",
+      "status": "PENDING_EXTERNAL",
+      "detail": "Run the workflow on the immutable release commit."
+    },
+    {
+      "name": "Docker image build",
+      "status": "PENDING_EXTERNAL",
+      "detail": "Build both images and record immutable digests."
+    },
+    {
+      "name": "PostgreSQL migration rehearsal",
+      "status": "PENDING_EXTERNAL",
+      "detail": "Apply all migrations and tests to PostgreSQL 16."
+    },
+    {
+      "name": "Backup and restore rehearsal",
+      "status": "PENDING_EXTERNAL",
+      "detail": "Restore the release backup to a disposable empty database."
+    },
+    {
+      "name": "OIDC and step-up",
+      "status": "PENDING_EXTERNAL",
+      "detail": "Validate the real issuer, JWKS rotation, audience, roles, and assurance."
+    },
+    {
+      "name": "Object storage and malware scan",
+      "status": "PENDING_EXTERNAL",
+      "detail": "Exercise upload, scan, grants, one-time download, and expiry."
+    },
+    {
+      "name": "Notification delivery",
+      "status": "PENDING_EXTERNAL",
+      "detail": "Validate provider callbacks, retries, dead letters, and SLO alerts."
+    },
+    {
+      "name": "Smoke, performance, and UAT",
+      "status": "PENDING_EXTERNAL",
+      "detail": "Execute smoke, load, negative authorization, and business acceptance suites."
+    },
+    {
+      "name": "DNS, TLS, monitoring",
+      "status": "PENDING_EXTERNAL",
+      "detail": "Validate certificates, external routing, dashboards, alerts, and log redaction."
+    }
+  ],
+  "decision": "NO-GO until every PENDING_EXTERNAL gate is evidenced and approved."
+}

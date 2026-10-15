@@ -1,0 +1,1 @@
+BEGIN;DROP TRIGGER IF EXISTS trg_profile_publication_readiness ON professional.profile_publication_requests;DROP FUNCTION IF EXISTS professional.enforce_profile_publication_readiness();DROP FUNCTION IF EXISTS professional.owned_profile_publication_readiness(uuid);DELETE FROM integration.schema_migrations WHERE migration_name='0750_v113_backend_publication_readiness';COMMIT;

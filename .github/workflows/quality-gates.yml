@@ -1,0 +1,65 @@
+name: V113 quality gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v113-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16.4-bookworm
+        env:
+          POSTGRES_USER: eim_test
+          POSTGRES_PASSWORD: eim_test_password
+          POSTGRES_DB: eim_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U eim_test -d eim_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgresql://eim_test:eim_test_password@127.0.0.1:5432/eim_test
+      APP_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run test:postgresql
+      - run: npm run security:baseline
+      - run: npm audit --omit=dev --audit-level=high
+      - run: npm sbom --sbom-format=cyclonedx > eim-v113-sbom.cdx.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eim-v113-security-and-sbom
+          path: |
+            eim-v113-sbom.cdx.json
+            openapi/eim-v113-r5.yaml
+            openapi/eim-v113-backend-r5.yaml
+          if-no-files-found: error
+          retention-days: 30
+
+  containers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build --pull --file Dockerfile.backend --tag eim-backend:${{ github.sha }} .
+      - run: docker build --pull --file Dockerfile.frontend --tag eim-frontend:${{ github.sha }} .

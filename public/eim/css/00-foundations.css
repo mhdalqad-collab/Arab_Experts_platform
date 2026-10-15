@@ -1,0 +1,19 @@
+:root{
+  --navy:#0a2540;--navy-2:#0f3460;--navy-3:#16437a;
+  --gold:#c9a24b;--gold-2:#b08a34;--gold-soft:#f6efdf;
+  --bg:#f3f5f8;--card:#ffffff;--ink:#1a2a3d;--muted:#67788d;--line:#e3e8ef;
+  --green:#157347;--green-soft:#e6f4ec;--red:#b42318;--red-soft:#fdecea;
+  --amber:#b54708;--amber-soft:#fdf3e7;--blue:#175cd3;--blue-soft:#eaf1fd;
+  --violet:#6941c6;--violet-soft:#f0ebfb;
+  --radius:14px;--shadow:0 1px 2px rgba(16,42,67,.06),0 8px 24px -12px rgba(16,42,67,.14);
+  --shadow-lg:0 24px 48px -20px rgba(10,37,64,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14.5px;line-height:1.7}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:14px;color:var(--ink)}
+button:focus-visible,a:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(201,162,75,.48);outline-offset:2px}
+::selection{background:var(--gold-soft)}
+svg{display:block}
+a{color:var(--blue);text-decoration:none}

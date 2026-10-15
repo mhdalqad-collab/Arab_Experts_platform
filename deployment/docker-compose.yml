@@ -1,0 +1,73 @@
+name: eim-v113-r5
+
+services:
+  postgres:
+    image: postgres:16.4-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-eim}
+      POSTGRES_USER: ${POSTGRES_USER:-eim_owner}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in deployment/.env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [private]
+
+  migrate:
+    image: postgres:16.4-bookworm
+    profiles: ["migrate"]
+    depends_on:
+      postgres: {condition: service_healthy}
+    working_dir: /workspace
+    volumes:
+      - ../database/postgresql:/workspace:ro
+    environment:
+      DATABASE_MIGRATION_URL: postgresql://${POSTGRES_USER:-eim_owner}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-eim}
+    entrypoint: ["/bin/bash", "/workspace/scripts/run-all.sh", "--all"]
+    networks: [private]
+
+  backend:
+    build:
+      context: ..
+      dockerfile: Dockerfile.backend
+    restart: unless-stopped
+    depends_on:
+      postgres: {condition: service_healthy}
+    env_file: [.env]
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      BACKEND_HOST: 0.0.0.0
+      BACKEND_PORT: 8788
+      DATABASE_URL: postgresql://${POSTGRES_USER:-eim_owner}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-eim}
+    ports: ["127.0.0.1:${BACKEND_PUBLIC_PORT:-8788}:8788"]
+    networks: [private, edge]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: Dockerfile.frontend
+    restart: unless-stopped
+    depends_on:
+      backend: {condition: service_healthy}
+    env_file: [.env]
+    environment:
+      POSTGRES_OPERATIONS_API_URL: http://backend:8788
+    ports: ["${FRONTEND_PUBLIC_PORT:-3000}:3000"]
+    networks: [edge]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+
+volumes:
+  postgres_data:
+
+networks:
+  private: {internal: true}
+  edge: {}

@@ -1,0 +1,1 @@
+BEGIN;DROP FUNCTION IF EXISTS professional.recalculate_owned_fingerprint_strength(uuid,uuid,uuid,varchar);DROP TABLE IF EXISTS professional.fingerprint_strength_assessments;DELETE FROM integration.schema_migrations WHERE migration_name='0730_v113_backend_fingerprint_strength';COMMIT;

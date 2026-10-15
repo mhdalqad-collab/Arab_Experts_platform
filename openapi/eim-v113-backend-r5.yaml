@@ -1,0 +1,2309 @@
+openapi: 3.1.0
+info:
+  title: EIM V113 Node/PostgreSQL Backend API
+  version: 1.0.0-r5.0910b
+  description: Generated, drift-checked contract with validator-aligned commands and operation-specific responses for backend/src/http.ts.
+servers:
+  - url: /
+    description: EIM backend service root
+tags:
+  - name: Platform
+  - name: Identity
+  - name: Membership
+  - name: Files and Privacy
+  - name: Evidence
+  - name: Professional Profiles
+  - name: Notifications
+  - name: Internal
+paths:
+  /health/live:
+    get:
+      tags: ["Platform"]
+      operationId: getHealthLive
+      security: []
+      responses:
+        '200': {$ref: '#/components/responses/getHealthLiveSuccess'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /health/ready:
+    get:
+      tags: ["Platform"]
+      operationId: getHealthReady
+      security: []
+      responses:
+        '200': {$ref: '#/components/responses/getHealthReadySuccess'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /internal/files/download-consume:
+    post:
+      tags: ["Internal"]
+      operationId: postInternalFilesDownloadConsume
+      security: [{internalToken: []}]
+      requestBody: {$ref: '#/components/requestBodies/parseDownloadConsume'}
+      responses:
+        '200': {$ref: '#/components/responses/postInternalFilesDownloadConsumeSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /internal/files/scan-results:
+    post:
+      tags: ["Internal"]
+      operationId: postInternalFilesScanResults
+      security: [{internalToken: []}]
+      requestBody: {$ref: '#/components/requestBodies/parseScanResult'}
+      responses:
+        '200': {$ref: '#/components/responses/postInternalFilesScanResultsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /internal/files/upload-completed:
+    post:
+      tags: ["Internal"]
+      operationId: postInternalFilesUploadCompleted
+      security: [{internalToken: []}]
+      requestBody: {$ref: '#/components/requestBodies/parseUploadCompletion'}
+      responses:
+        '200': {$ref: '#/components/responses/postInternalFilesUploadCompletedSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /internal/notifications/claim:
+    post:
+      tags: ["Internal"]
+      operationId: postInternalNotificationsClaim
+      security: [{internalToken: []}]
+      requestBody: {$ref: '#/components/requestBodies/parseNotificationClaim'}
+      responses:
+        '200': {$ref: '#/components/responses/postInternalNotificationsClaimSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /internal/notifications/results:
+    post:
+      tags: ["Internal"]
+      operationId: postInternalNotificationsResults
+      security: [{internalToken: []}]
+      requestBody: {$ref: '#/components/requestBodies/parseNotificationResult'}
+      responses:
+        '200': {$ref: '#/components/responses/postInternalNotificationsResultsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/evidence:
+    get:
+      tags: ["Evidence"]
+      operationId: getEvidence
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getEvidenceSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    post:
+      tags: ["Evidence"]
+      operationId: postEvidence
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseEvidenceInput'}
+      responses:
+        '201': {$ref: '#/components/responses/postEvidenceSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/evidence-verifications:
+    get:
+      tags: ["Evidence"]
+      operationId: getEvidenceVerifications
+      security: [{oidc: []}]
+      x-eim-permission: "evidence.verify"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getEvidenceVerificationsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/evidence-verifications/{id}/checks:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Evidence"]
+      operationId: postEvidenceVerificationsByIdChecks
+      security: [{oidc: []}]
+      x-eim-permission: "evidence.verify"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parseCheck'}
+      responses:
+        '201': {$ref: '#/components/responses/postEvidenceVerificationsByIdChecksSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/evidence-verifications/{id}/claim:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Evidence"]
+      operationId: postEvidenceVerificationsByIdClaim
+      security: [{oidc: []}]
+      x-eim-permission: "evidence.verify"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/postEvidenceVerificationsByIdClaimSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/evidence-verifications/{id}/decision:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Evidence"]
+      operationId: postEvidenceVerificationsByIdDecision
+      security: [{oidc: []}]
+      x-eim-permission: "evidence.verify"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parseVerificationDecision'}
+      responses:
+        '200': {$ref: '#/components/responses/postEvidenceVerificationsByIdDecisionSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/evidence/{id}/submit-verification:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Evidence"]
+      operationId: postEvidenceByIdSubmitVerification
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/postEvidenceByIdSubmitVerificationSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/file-access-grants/{id}/revoke:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Files and Privacy"]
+      operationId: postFileAccessGrantsByIdRevoke
+      security: [{oidc: []}]
+      x-eim-permission: "privacy.self.manage"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parseRevocation'}
+      responses:
+        '200': {$ref: '#/components/responses/postFileAccessGrantsByIdRevokeSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/files:
+    get:
+      tags: ["Files and Privacy"]
+      operationId: getFiles
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getFilesSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/files/{id}/access-grants:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Files and Privacy"]
+      operationId: postFilesByIdAccessGrants
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseAccessGrant'}
+      responses:
+        '201': {$ref: '#/components/responses/postFilesByIdAccessGrantsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/files/{id}/download-intents:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Files and Privacy"]
+      operationId: postFilesByIdDownloadIntents
+      security: [{oidc: []}]
+      responses:
+        '201': {$ref: '#/components/responses/postFilesByIdDownloadIntentsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/files/upload-intents:
+    post:
+      tags: ["Files and Privacy"]
+      operationId: postFilesUploadIntents
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseFileIntent'}
+      responses:
+        '200': {$ref: '#/components/responses/postFilesUploadIntentsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/identity/register:
+    post:
+      tags: ["Identity"]
+      operationId: postIdentityRegister
+      security: [{oidc: []}]
+      requestBody: {$ref: '#/components/requestBodies/parseRegistrationInput'}
+      responses:
+        '200': {$ref: '#/components/responses/postIdentityRegisterSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/me:
+    get:
+      tags: ["Identity"]
+      operationId: getMe
+      security: [{oidc: []}]
+      responses:
+        '200': {$ref: '#/components/responses/getMeSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/me/professional-reverification-alerts:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getMeProfessionalReverificationAlerts
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getMeProfessionalReverificationAlertsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/me/professional-reverification-alerts/{id}/acknowledge:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postMeProfessionalReverificationAlertsByIdAcknowledge
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/postMeProfessionalReverificationAlertsByIdAcknowledgeSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/membership-applications:
+    get:
+      tags: ["Membership"]
+      operationId: getMembershipApplications
+      security: [{oidc: []}]
+      x-eim-permission: "membership.self.apply"
+      responses:
+        '200': {$ref: '#/components/responses/getMembershipApplicationsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    post:
+      tags: ["Membership"]
+      operationId: postMembershipApplications
+      security: [{oidc: []}]
+      x-eim-permission: "membership.self.apply"
+      requestBody: {$ref: '#/components/requestBodies/parseCreateApplication'}
+      responses:
+        '200': {$ref: '#/components/responses/postMembershipApplicationsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/membership-applications/{id}/steps/{id2}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+      - {name: id2, in: path, required: true, schema: {type: string, minLength: 1}}
+    put:
+      tags: ["Membership"]
+      operationId: putMembershipApplicationsByIdStepsById2
+      security: [{oidc: []}]
+      x-eim-permission: "membership.self.apply"
+      requestBody: {$ref: '#/components/requestBodies/parseSaveStep'}
+      responses:
+        '200': {$ref: '#/components/responses/putMembershipApplicationsByIdStepsById2Success'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/membership-applications/{id}/submit:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Membership"]
+      operationId: postMembershipApplicationsByIdSubmit
+      security: [{oidc: []}]
+      x-eim-permission: "membership.self.apply"
+      requestBody: {$ref: '#/components/requestBodies/parseSubmitApplication'}
+      responses:
+        '200': {$ref: '#/components/responses/postMembershipApplicationsByIdSubmitSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/membership-decisions/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Membership"]
+      operationId: postMembershipDecisionsById
+      security: [{oidc: []}]
+      x-eim-permission: "membership.approve"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parseDecision'}
+      responses:
+        '200': {$ref: '#/components/responses/postMembershipDecisionsByIdSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/membership-reviews:
+    get:
+      tags: ["Membership"]
+      operationId: getMembershipReviews
+      security: [{oidc: []}]
+      x-eim-permission: "membership.review"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getMembershipReviewsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/membership-reviews/{id}/claim:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Membership"]
+      operationId: postMembershipReviewsByIdClaim
+      security: [{oidc: []}]
+      x-eim-permission: "membership.review"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/postMembershipReviewsByIdClaimSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/membership-reviews/{id}/recommendation:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Membership"]
+      operationId: postMembershipReviewsByIdRecommendation
+      security: [{oidc: []}]
+      x-eim-permission: "membership.review"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parseReview'}
+      responses:
+        '200': {$ref: '#/components/responses/postMembershipReviewsByIdRecommendationSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/membership-types:
+    get:
+      tags: ["Membership"]
+      operationId: getMembershipTypes
+      security: [{oidc: []}]
+      x-eim-permission: "membership.self.apply"
+      responses:
+        '200': {$ref: '#/components/responses/getMembershipTypesSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/meta:
+    get:
+      tags: ["Platform"]
+      operationId: getMeta
+      security: []
+      responses:
+        '200': {$ref: '#/components/responses/getMetaSuccess'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/notification-delivery-dead-letters/{id}/resolution:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Notifications"]
+      operationId: postNotificationDeliveryDeadLettersByIdResolution
+      security: [{oidc: []}]
+      x-eim-permission: "communication.delivery.operations"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parseDeadLetterResolution'}
+      responses:
+        '200': {$ref: '#/components/responses/postNotificationDeliveryDeadLettersByIdResolutionSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/notification-delivery-incidents/{id}/resolution:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Notifications"]
+      operationId: postNotificationDeliveryIncidentsByIdResolution
+      security: [{oidc: []}]
+      x-eim-permission: "communication.delivery.operations"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parseDeliveryIncidentResolution'}
+      responses:
+        '200': {$ref: '#/components/responses/postNotificationDeliveryIncidentsByIdResolutionSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/notification-delivery-operations:
+    get:
+      tags: ["Notifications"]
+      operationId: getNotificationDeliveryOperations
+      security: [{oidc: []}]
+      x-eim-permission: "communication.delivery.operations"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getNotificationDeliveryOperationsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/notification-delivery-operations/slo/evaluate:
+    post:
+      tags: ["Notifications"]
+      operationId: postNotificationDeliveryOperationsSloEvaluate
+      security: [{oidc: []}]
+      x-eim-permission: "communication.delivery.operations"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/postNotificationDeliveryOperationsSloEvaluateSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/privacy-preferences:
+    get:
+      tags: ["Files and Privacy"]
+      operationId: getPrivacyPreferences
+      security: [{oidc: []}]
+      x-eim-permission: "privacy.self.manage"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getPrivacyPreferencesSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    put:
+      tags: ["Files and Privacy"]
+      operationId: putPrivacyPreferences
+      security: [{oidc: []}]
+      x-eim-permission: "privacy.self.manage"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parsePrivacyPreference'}
+      responses:
+        '200': {$ref: '#/components/responses/putPrivacyPreferencesSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-evidence-links:
+    get:
+      tags: ["Evidence"]
+      operationId: getProfessionalEvidenceLinks
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalEvidenceLinksSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    post:
+      tags: ["Evidence"]
+      operationId: postProfessionalEvidenceLinks
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseEvidenceLink'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalEvidenceLinksSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-evidence-strength:
+    get:
+      tags: ["Evidence"]
+      operationId: getProfessionalEvidenceStrength
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalEvidenceStrengthSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-evidence-strength/recalculate:
+    post:
+      tags: ["Evidence"]
+      operationId: postProfessionalEvidenceStrengthRecalculate
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseStrengthTarget'}
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalEvidenceStrengthRecalculateSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalExperiences
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalExperiencesSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/consulting:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalExperiencesConsulting
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseConsulting'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalExperiencesConsultingSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/consulting/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    put:
+      tags: ["Professional Profiles"]
+      operationId: putProfessionalExperiencesConsultingById
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseConsulting'}
+      responses:
+        '200': {$ref: '#/components/responses/putProfessionalExperiencesConsultingByIdSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/employments:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalExperiencesEmployments
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseEmployment'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalExperiencesEmploymentsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/employments/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    put:
+      tags: ["Professional Profiles"]
+      operationId: putProfessionalExperiencesEmploymentsById
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseEmployment'}
+      responses:
+        '200': {$ref: '#/components/responses/putProfessionalExperiencesEmploymentsByIdSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/projects:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalExperiencesProjects
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseProject'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalExperiencesProjectsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/projects-consulting:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalExperiencesProjectsConsulting
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalExperiencesProjectsConsultingSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/projects/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    put:
+      tags: ["Professional Profiles"]
+      operationId: putProfessionalExperiencesProjectsById
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseProject'}
+      responses:
+        '200': {$ref: '#/components/responses/putProfessionalExperiencesProjectsByIdSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/qualifications:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalExperiencesQualifications
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseQualification'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalExperiencesQualificationsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/qualifications/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    put:
+      tags: ["Professional Profiles"]
+      operationId: putProfessionalExperiencesQualificationsById
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseQualification'}
+      responses:
+        '200': {$ref: '#/components/responses/putProfessionalExperiencesQualificationsByIdSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/research:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalExperiencesResearch
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseResearch'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalExperiencesResearchSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/research/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    put:
+      tags: ["Professional Profiles"]
+      operationId: putProfessionalExperiencesResearchById
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseResearch'}
+      responses:
+        '200': {$ref: '#/components/responses/putProfessionalExperiencesResearchByIdSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/training:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalExperiencesTraining
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseTraining'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalExperiencesTrainingSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/training-research:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalExperiencesTrainingResearch
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalExperiencesTrainingResearchSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-experiences/training/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    put:
+      tags: ["Professional Profiles"]
+      operationId: putProfessionalExperiencesTrainingById
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseTraining'}
+      responses:
+        '200': {$ref: '#/components/responses/putProfessionalExperiencesTrainingByIdSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-fingerprint-strength:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalFingerprintStrength
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalFingerprintStrengthSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-fingerprint-strength/recalculate:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalFingerprintStrengthRecalculate
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseFingerprintStrength'}
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalFingerprintStrengthRecalculateSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-fingerprints:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalFingerprints
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseFingerprint'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalFingerprintsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-fingerprints/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    put:
+      tags: ["Professional Profiles"]
+      operationId: putProfessionalFingerprintsById
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseFingerprint'}
+      responses:
+        '200': {$ref: '#/components/responses/putProfessionalFingerprintsByIdSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-profile:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalProfile
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalProfileSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    put:
+      tags: ["Professional Profiles"]
+      operationId: putProfessionalProfile
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parseProfile'}
+      responses:
+        '200': {$ref: '#/components/responses/putProfessionalProfileSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-profile/publication-readiness:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalProfilePublicationReadiness
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalProfilePublicationReadinessSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-profile/publication-requests:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalProfilePublicationRequests
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parsePublicationSubmit'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalProfilePublicationRequestsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-profile/publication-requests/{id}/amendments:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalProfilePublicationRequestsByIdAmendments
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalProfilePublicationRequestsByIdAmendmentsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalProfilePublicationRequestsByIdAmendments
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parsePublicationAmendment'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalProfilePublicationRequestsByIdAmendmentsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-profile/publication-requests/{id}/consolidation:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalProfilePublicationRequestsByIdConsolidation
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalProfilePublicationRequestsByIdConsolidationSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-profile/publication-requests/{id}/findings:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalProfilePublicationRequestsByIdFindings
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalProfilePublicationRequestsByIdFindingsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-profile/publication-requests/{id}/findings/{id2}/responses:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+      - {name: id2, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalProfilePublicationRequestsByIdFindingsById2Responses
+      security: [{oidc: []}]
+      x-eim-permission: "account.self.manage"
+      requestBody: {$ref: '#/components/requestBodies/parsePublicationFindingResponse'}
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalProfilePublicationRequestsByIdFindingsById2ResponsesSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-decisions/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalPublicationDecisionsById
+      security: [{oidc: []}]
+      x-eim-permission: "professional.publish"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parsePublicationDecision'}
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalPublicationDecisionsByIdSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalPublicationReviews
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalPublicationReviewsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalPublicationReviewsById
+      security: [{oidc: []}]
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalPublicationReviewsByIdSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews/{id}/amendments:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalPublicationReviewsByIdAmendments
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalPublicationReviewsByIdAmendmentsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews/{id}/amendments/{id2}/decision:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+      - {name: id2, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalPublicationReviewsByIdAmendmentsById2Decision
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parsePublicationAmendmentDecision'}
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalPublicationReviewsByIdAmendmentsById2DecisionSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews/{id}/claim:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalPublicationReviewsByIdClaim
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalPublicationReviewsByIdClaimSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews/{id}/consolidation:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalPublicationReviewsByIdConsolidation
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalPublicationReviewsByIdConsolidationSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalPublicationReviewsByIdConsolidation
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalPublicationReviewsByIdConsolidationSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews/{id}/evidence/{id2}/files/{id3}/download-intents:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+      - {name: id2, in: path, required: true, schema: {type: string, minLength: 1}}
+      - {name: id3, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Evidence"]
+      operationId: postProfessionalPublicationReviewsByIdEvidenceById2FilesById3DownloadIntents
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review.document"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parseReviewDocumentAccess'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalPublicationReviewsByIdEvidenceById2FilesById3DownloadIntentsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews/{id}/findings:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalPublicationReviewsByIdFindings
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalPublicationReviewsByIdFindingsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalPublicationReviewsByIdFindings
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parsePublicationFinding'}
+      responses:
+        '201': {$ref: '#/components/responses/postProfessionalPublicationReviewsByIdFindingsSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews/{id}/findings/{id2}/resolution:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+      - {name: id2, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalPublicationReviewsByIdFindingsById2Resolution
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parsePublicationFindingResolution'}
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalPublicationReviewsByIdFindingsById2ResolutionSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publication-reviews/{id}/recommendation:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalPublicationReviewsByIdRecommendation
+      security: [{oidc: []}]
+      x-eim-permission: "professional.review"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parsePublicationReview'}
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalPublicationReviewsByIdRecommendationSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publications:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalPublications
+      security: [{oidc: []}]
+      x-eim-permission: "professional.publish.lifecycle"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalPublicationsSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publications/{id}/lifecycle:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalPublicationsByIdLifecycle
+      security: [{oidc: []}]
+      x-eim-permission: "professional.publish.lifecycle"
+      x-eim-step-up-required: true
+      requestBody: {$ref: '#/components/requestBodies/parsePublicationLifecycle'}
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalPublicationsByIdLifecycleSuccess'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '415': {$ref: '#/components/responses/UnsupportedMediaType'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publications/reverification:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getProfessionalPublicationsReverification
+      security: [{oidc: []}]
+      x-eim-permission: "professional.publish.lifecycle"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/getProfessionalPublicationsReverificationSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/professional-publications/reverification/run:
+    post:
+      tags: ["Professional Profiles"]
+      operationId: postProfessionalPublicationsReverificationRun
+      security: [{oidc: []}]
+      x-eim-permission: "professional.publish.lifecycle"
+      x-eim-step-up-required: true
+      responses:
+        '200': {$ref: '#/components/responses/postProfessionalPublicationsReverificationRunSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/public/parties/{id}:
+    parameters:
+      - {name: id, in: path, required: true, schema: {type: string, minLength: 1}}
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getPublicPartiesById
+      security: []
+      responses:
+        '200': {$ref: '#/components/responses/getPublicPartiesByIdSuccess'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+  /v1/public/professionals:
+    get:
+      tags: ["Professional Profiles"]
+      operationId: getPublicProfessionals
+      security: []
+      parameters:
+        - {name: q, in: query, schema: {type: string, maxLength: 120}}
+        - {name: membershipTypeCode, in: query, schema: {type: string, pattern: '^[A-Z][A-Z0-9_]*$', maxLength: 60}}
+        - {name: taxonomyNodeCode, in: query, schema: {type: string, pattern: '^[A-Z][A-Z0-9_]*$', maxLength: 60}}
+        - {name: experienceLevelCode, in: query, schema: {type: string, pattern: '^[A-Z][A-Z0-9_]*$', maxLength: 60}}
+        - {name: expertRoleCode, in: query, schema: {type: string, pattern: '^[A-Z][A-Z0-9_]*$', maxLength: 60}}
+        - {name: page, in: query, schema: {type: integer, minimum: 1, maximum: 1000, default: 1}}
+        - {name: pageSize, in: query, schema: {type: integer, minimum: 1, maximum: 50, default: 20}}
+      responses:
+        '200': {$ref: '#/components/responses/getPublicProfessionalsSuccess'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+components:
+  securitySchemes:
+    oidc: {type: openIdConnect, openIdConnectUrl: '/.well-known/openid-configuration'}
+    internalToken: {type: apiKey, in: header, name: X-Internal-Token}
+  requestBodies:
+    parseAccessGrant:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseAccessGrantCommand'}
+          example: {"granteePartyId":"00000000-0000-4000-8000-000000000001","purposeCode":"VALUE","expiresAt":"2026-12-31T12:00:00Z"}
+    parseCheck:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseCheckCommand'}
+          example: {"checkTypeCode":"VALUE","resultCode":"PASS","notes":"VALUE"}
+    parseConsulting:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseConsultingCommand'}
+          example: {"engagementTitleAr":"VALUE","durationDays":1}
+    parseCreateApplication:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseCreateApplicationCommand'}
+          example: {"membershipTypeCode":"VALUE"}
+    parseDeadLetterResolution:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseDeadLetterResolutionCommand'}
+          example: {"action":"REQUEUE","reason":"VALUE"}
+    parseDecision:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseDecisionCommand'}
+          example: {"decisionCode":"APPROVED","reasonCode":"VALUE","comment":"VALUE"}
+    parseDeliveryIncidentResolution:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseDeliveryIncidentResolutionCommand'}
+          example: {"action":"ACKNOWLEDGE","reason":"VALUE"}
+    parseDownloadConsume:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseDownloadConsumeCommand'}
+          example: {"sessionId":"00000000-0000-4000-8000-000000000001","downloadToken":"VALUE"}
+    parseEmployment:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseEmploymentCommand'}
+          example: {"employerNameAr":"VALUE","jobTitleAr":"VALUE","startedAt":"2026-12-31"}
+    parseEvidenceInput:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseEvidenceInputCommand'}
+          example: {"fileId":"00000000-0000-4000-8000-000000000001","evidenceTypeCode":"VALUE","titleAr":"VALUE"}
+    parseEvidenceLink:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseEvidenceLinkCommand'}
+          example: {"evidenceItemId":"00000000-0000-4000-8000-000000000001","targetEntityType":"VALUE","targetEntityId":"00000000-0000-4000-8000-000000000001","relationshipCode":"SUPPORTS","relevanceScore":0}
+    parseFileIntent:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseFileIntentCommand'}
+          example: {"originalFileName":"VALUE","mediaType":"application/pdf","sizeBytes":1,"sha256":"VALUE","confidentialityLevelCode":"PUBLIC"}
+    parseFingerprint:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseFingerprintCommand'}
+          example: {"fingerprintCode":"VALUE","titleAr":"VALUE","taxonomyNodeCode":"VALUE","experienceLevelCode":"VALUE","expertRoleCode":"VALUE"}
+    parseFingerprintStrength:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseFingerprintStrengthCommand'}
+          example: {"professionalFingerprintId":"00000000-0000-4000-8000-000000000001"}
+    parseNotificationClaim:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseNotificationClaimCommand'}
+          example: {"providerCode":"VALUE"}
+    parseNotificationResult:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseNotificationResultCommand'}
+          example: {"messageId":"00000000-0000-4000-8000-000000000001","leaseToken":"VALUE","providerCode":"VALUE","outcomeCode":"ACCEPTED"}
+    parsePrivacyPreference:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePrivacyPreferenceCommand'}
+          example: {"resourceType":"PARTY_PROFILE","resourceId":"00000000-0000-4000-8000-000000000001","fieldPath":"VALUE","visibilityCode":"PUBLIC"}
+    parseProfile:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseProfileCommand'}
+          example: {}
+    parseProject:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseProjectCommand'}
+          example: {"projectNameAr":"VALUE","executionYear":1900}
+    parsePublicationAmendment:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePublicationAmendmentCommand'}
+          example: {"findingId":"00000000-0000-4000-8000-000000000001","summary":"VALUE","changeSet":{}}
+    parsePublicationAmendmentDecision:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePublicationAmendmentDecisionCommand'}
+          example: {"decision":"ACCEPT","comment":"VALUE"}
+    parsePublicationDecision:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePublicationDecisionCommand'}
+          example: {"decision":"APPROVED","comment":"VALUE"}
+    parsePublicationFinding:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePublicationFindingCommand'}
+          example: {"targetType":"PROFILE","categoryCode":"VALUE","severityCode":"INFO","description":"VALUE","requiredAction":"VALUE"}
+    parsePublicationFindingResolution:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePublicationFindingResolutionCommand'}
+          example: {"action":"RESOLVE","comment":"VALUE"}
+    parsePublicationFindingResponse:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePublicationFindingResponseCommand'}
+          example: {"response":"VALUE"}
+    parsePublicationLifecycle:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePublicationLifecycleCommand'}
+          example: {"action":"SUSPEND","reason":"VALUE"}
+    parsePublicationReview:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePublicationReviewCommand'}
+          example: {"recommendation":"APPROVE","comment":"VALUE"}
+    parsePublicationSubmit:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parsePublicationSubmitCommand'}
+          example: {"expectedRowVersion":1}
+    parseQualification:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseQualificationCommand'}
+          example: {"qualificationTypeCode":"VALUE","fieldOfStudyAr":"VALUE","institutionNameAr":"VALUE"}
+    parseRegistrationInput:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseRegistrationInputCommand'}
+          example: {"firstNameAr":"VALUE","lastNameAr":"VALUE","displayNameAr":"VALUE"}
+    parseResearch:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseResearchCommand'}
+          example: {"researchTitleAr":"VALUE","researchRoleCode":"VALUE","expectedRowVersion":1}
+    parseReview:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseReviewCommand'}
+          example: {"recommendationCode":"APPROVE","comments":"VALUE"}
+    parseReviewDocumentAccess:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseReviewDocumentAccessCommand'}
+          example: {"reason":"VALUE"}
+    parseRevocation:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseRevocationCommand'}
+          example: {"reason":"VALUE"}
+    parseSaveStep:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseSaveStepCommand'}
+          example: {"payload":{},"complete":true,"expectedRowVersion":1}
+    parseScanResult:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseScanResultCommand'}
+          example: {"fileId":"00000000-0000-4000-8000-000000000001","resultCode":"SAFE","scannerReference":"VALUE"}
+    parseStrengthTarget:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseStrengthTargetCommand'}
+          example: {"targetEntityType":"VALUE","targetEntityId":"00000000-0000-4000-8000-000000000001"}
+    parseSubmitApplication:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseSubmitApplicationCommand'}
+          example: {"expectedRowVersion":1}
+    parseTraining:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseTrainingCommand'}
+          example: {"courseNameAr":"VALUE","expectedRowVersion":1}
+    parseUploadCompletion:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseUploadCompletionCommand'}
+          example: {"sessionId":"00000000-0000-4000-8000-000000000001","uploadToken":"VALUE","mediaType":"application/pdf","sha256":"VALUE","sizeBytes":1}
+    parseVerificationDecision:
+      required: true
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/parseVerificationDecisionCommand'}
+          example: {"decisionCode":"VERIFIED","rationale":"VALUE"}
+  responses:
+    getHealthLiveSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getHealthLiveResponse'}}}
+    getHealthReadySuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getHealthReadyResponse'}}}
+    postInternalFilesDownloadConsumeSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postInternalFilesDownloadConsumeResponse'}}}
+    postInternalFilesScanResultsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postInternalFilesScanResultsResponse'}}}
+    postInternalFilesUploadCompletedSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postInternalFilesUploadCompletedResponse'}}}
+    postInternalNotificationsClaimSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postInternalNotificationsClaimResponse'}}}
+    postInternalNotificationsResultsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postInternalNotificationsResultsResponse'}}}
+    getEvidenceSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getEvidenceResponse'}}}
+    postEvidenceSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postEvidenceResponse'}}}
+    getEvidenceVerificationsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getEvidenceVerificationsResponse'}}}
+    postEvidenceVerificationsByIdChecksSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postEvidenceVerificationsByIdChecksResponse'}}}
+    postEvidenceVerificationsByIdClaimSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postEvidenceVerificationsByIdClaimResponse'}}}
+    postEvidenceVerificationsByIdDecisionSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postEvidenceVerificationsByIdDecisionResponse'}}}
+    postEvidenceByIdSubmitVerificationSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postEvidenceByIdSubmitVerificationResponse'}}}
+    postFileAccessGrantsByIdRevokeSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postFileAccessGrantsByIdRevokeResponse'}}}
+    getFilesSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getFilesResponse'}}}
+    postFilesByIdAccessGrantsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postFilesByIdAccessGrantsResponse'}}}
+    postFilesByIdDownloadIntentsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postFilesByIdDownloadIntentsResponse'}}}
+    postFilesUploadIntentsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postFilesUploadIntentsResponse'}}}
+    postIdentityRegisterSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postIdentityRegisterResponse'}}}
+    getMeSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getMeResponse'}}}
+    getMeProfessionalReverificationAlertsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getMeProfessionalReverificationAlertsResponse'}}}
+    postMeProfessionalReverificationAlertsByIdAcknowledgeSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postMeProfessionalReverificationAlertsByIdAcknowledgeResponse'}}}
+    getMembershipApplicationsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getMembershipApplicationsResponse'}}}
+    postMembershipApplicationsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postMembershipApplicationsResponse'}}}
+    putMembershipApplicationsByIdStepsById2Success:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putMembershipApplicationsByIdStepsById2Response'}}}
+    postMembershipApplicationsByIdSubmitSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postMembershipApplicationsByIdSubmitResponse'}}}
+    postMembershipDecisionsByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postMembershipDecisionsByIdResponse'}}}
+    getMembershipReviewsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getMembershipReviewsResponse'}}}
+    postMembershipReviewsByIdClaimSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postMembershipReviewsByIdClaimResponse'}}}
+    postMembershipReviewsByIdRecommendationSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postMembershipReviewsByIdRecommendationResponse'}}}
+    getMembershipTypesSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getMembershipTypesResponse'}}}
+    getMetaSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getMetaResponse'}}}
+    postNotificationDeliveryDeadLettersByIdResolutionSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postNotificationDeliveryDeadLettersByIdResolutionResponse'}}}
+    postNotificationDeliveryIncidentsByIdResolutionSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postNotificationDeliveryIncidentsByIdResolutionResponse'}}}
+    getNotificationDeliveryOperationsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getNotificationDeliveryOperationsResponse'}}}
+    postNotificationDeliveryOperationsSloEvaluateSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postNotificationDeliveryOperationsSloEvaluateResponse'}}}
+    getPrivacyPreferencesSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getPrivacyPreferencesResponse'}}}
+    putPrivacyPreferencesSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putPrivacyPreferencesResponse'}}}
+    getProfessionalEvidenceLinksSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalEvidenceLinksResponse'}}}
+    postProfessionalEvidenceLinksSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalEvidenceLinksResponse'}}}
+    getProfessionalEvidenceStrengthSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalEvidenceStrengthResponse'}}}
+    postProfessionalEvidenceStrengthRecalculateSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalEvidenceStrengthRecalculateResponse'}}}
+    getProfessionalExperiencesSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalExperiencesResponse'}}}
+    postProfessionalExperiencesConsultingSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalExperiencesConsultingResponse'}}}
+    putProfessionalExperiencesConsultingByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putProfessionalExperiencesConsultingByIdResponse'}}}
+    postProfessionalExperiencesEmploymentsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalExperiencesEmploymentsResponse'}}}
+    putProfessionalExperiencesEmploymentsByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putProfessionalExperiencesEmploymentsByIdResponse'}}}
+    postProfessionalExperiencesProjectsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalExperiencesProjectsResponse'}}}
+    getProfessionalExperiencesProjectsConsultingSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalExperiencesProjectsConsultingResponse'}}}
+    putProfessionalExperiencesProjectsByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putProfessionalExperiencesProjectsByIdResponse'}}}
+    postProfessionalExperiencesQualificationsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalExperiencesQualificationsResponse'}}}
+    putProfessionalExperiencesQualificationsByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putProfessionalExperiencesQualificationsByIdResponse'}}}
+    postProfessionalExperiencesResearchSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalExperiencesResearchResponse'}}}
+    putProfessionalExperiencesResearchByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putProfessionalExperiencesResearchByIdResponse'}}}
+    postProfessionalExperiencesTrainingSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalExperiencesTrainingResponse'}}}
+    getProfessionalExperiencesTrainingResearchSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalExperiencesTrainingResearchResponse'}}}
+    putProfessionalExperiencesTrainingByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putProfessionalExperiencesTrainingByIdResponse'}}}
+    getProfessionalFingerprintStrengthSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalFingerprintStrengthResponse'}}}
+    postProfessionalFingerprintStrengthRecalculateSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalFingerprintStrengthRecalculateResponse'}}}
+    postProfessionalFingerprintsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalFingerprintsResponse'}}}
+    putProfessionalFingerprintsByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putProfessionalFingerprintsByIdResponse'}}}
+    getProfessionalProfileSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalProfileResponse'}}}
+    putProfessionalProfileSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/putProfessionalProfileResponse'}}}
+    getProfessionalProfilePublicationReadinessSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalProfilePublicationReadinessResponse'}}}
+    postProfessionalProfilePublicationRequestsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalProfilePublicationRequestsResponse'}}}
+    getProfessionalProfilePublicationRequestsByIdAmendmentsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalProfilePublicationRequestsByIdAmendmentsResponse'}}}
+    postProfessionalProfilePublicationRequestsByIdAmendmentsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalProfilePublicationRequestsByIdAmendmentsResponse'}}}
+    getProfessionalProfilePublicationRequestsByIdConsolidationSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalProfilePublicationRequestsByIdConsolidationResponse'}}}
+    getProfessionalProfilePublicationRequestsByIdFindingsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalProfilePublicationRequestsByIdFindingsResponse'}}}
+    postProfessionalProfilePublicationRequestsByIdFindingsById2ResponsesSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalProfilePublicationRequestsByIdFindingsById2ResponsesResponse'}}}
+    postProfessionalPublicationDecisionsByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationDecisionsByIdResponse'}}}
+    getProfessionalPublicationReviewsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalPublicationReviewsResponse'}}}
+    getProfessionalPublicationReviewsByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalPublicationReviewsByIdResponse'}}}
+    getProfessionalPublicationReviewsByIdAmendmentsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalPublicationReviewsByIdAmendmentsResponse'}}}
+    postProfessionalPublicationReviewsByIdAmendmentsById2DecisionSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationReviewsByIdAmendmentsById2DecisionResponse'}}}
+    postProfessionalPublicationReviewsByIdClaimSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationReviewsByIdClaimResponse'}}}
+    getProfessionalPublicationReviewsByIdConsolidationSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalPublicationReviewsByIdConsolidationResponse'}}}
+    postProfessionalPublicationReviewsByIdConsolidationSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationReviewsByIdConsolidationResponse'}}}
+    postProfessionalPublicationReviewsByIdEvidenceById2FilesById3DownloadIntentsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationReviewsByIdEvidenceById2FilesById3DownloadIntentsResponse'}}}
+    getProfessionalPublicationReviewsByIdFindingsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalPublicationReviewsByIdFindingsResponse'}}}
+    postProfessionalPublicationReviewsByIdFindingsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationReviewsByIdFindingsResponse'}}}
+    postProfessionalPublicationReviewsByIdFindingsById2ResolutionSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationReviewsByIdFindingsById2ResolutionResponse'}}}
+    postProfessionalPublicationReviewsByIdRecommendationSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationReviewsByIdRecommendationResponse'}}}
+    getProfessionalPublicationsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalPublicationsResponse'}}}
+    postProfessionalPublicationsByIdLifecycleSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationsByIdLifecycleResponse'}}}
+    getProfessionalPublicationsReverificationSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getProfessionalPublicationsReverificationResponse'}}}
+    postProfessionalPublicationsReverificationRunSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/postProfessionalPublicationsReverificationRunResponse'}}}
+    getPublicPartiesByIdSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getPublicPartiesByIdResponse'}}}
+    getPublicProfessionalsSuccess:
+      description: Successful operation response
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/getPublicProfessionalsResponse'}}}
+    BadRequest:
+      description: Malformed JSON request
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {error: VALIDATION_FAILED, correlationId: 00000000-0000-4000-8000-000000000001}}}
+    Unauthorized:
+      description: Missing or invalid authentication
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {error: VALIDATION_FAILED, correlationId: 00000000-0000-4000-8000-000000000001}}}
+    Forbidden:
+      description: Permission or step-up requirement failed
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {error: VALIDATION_FAILED, correlationId: 00000000-0000-4000-8000-000000000001}}}
+    NotFound:
+      description: Resource was not found
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {error: VALIDATION_FAILED, correlationId: 00000000-0000-4000-8000-000000000001}}}
+    Conflict:
+      description: State, version, or uniqueness conflict
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {error: VALIDATION_FAILED, correlationId: 00000000-0000-4000-8000-000000000001}}}
+    PayloadTooLarge:
+      description: Request body exceeds the endpoint limit
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {error: VALIDATION_FAILED, correlationId: 00000000-0000-4000-8000-000000000001}}}
+    UnsupportedMediaType:
+      description: Content-Type must be application/json
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {error: VALIDATION_FAILED, correlationId: 00000000-0000-4000-8000-000000000001}}}
+    ValidationError:
+      description: Command validation failed
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {error: VALIDATION_FAILED, correlationId: 00000000-0000-4000-8000-000000000001}}}
+    ServiceUnavailable:
+      description: A required service is unavailable
+      headers: {X-Correlation-Id: {$ref: '#/components/headers/CorrelationId'}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {error: VALIDATION_FAILED, correlationId: 00000000-0000-4000-8000-000000000001}}}
+  headers:
+    CorrelationId: {description: Request correlation identifier, schema: {type: string, minLength: 1, maxLength: 120}}
+  schemas:
+    ResponseMeta: {type: object, additionalProperties: false, required: [correlationId], properties: {correlationId: {type: string, minLength: 1, maxLength: 120}}}
+    RecordData: {type: object, description: Repository record projected by the selected operation, additionalProperties: true}
+    ErrorEnvelope:
+      type: object
+      required: [error, correlationId]
+      properties:
+        error: {type: string}
+        correlationId: {type: string}
+    getHealthLiveResponse: {"type":"object","additionalProperties":false,"required":["status","service","version"],"properties":{"status":{"const":"ok"},"service":{"const":"eim-backend"},"version":{"type":"string"}}}
+    getHealthReadyResponse: {"type":"object","additionalProperties":false,"required":["status","database"],"properties":{"status":{"const":"ready"},"database":{"type":"object","additionalProperties":true}}}
+    postInternalFilesDownloadConsumeData: {"$ref":"#/components/schemas/RecordData"}
+    postInternalFilesDownloadConsumeResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postInternalFilesDownloadConsumeData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postInternalFilesScanResultsData: {"$ref":"#/components/schemas/RecordData"}
+    postInternalFilesScanResultsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postInternalFilesScanResultsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postInternalFilesUploadCompletedData: {"$ref":"#/components/schemas/RecordData"}
+    postInternalFilesUploadCompletedResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postInternalFilesUploadCompletedData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postInternalNotificationsClaimData: {"$ref":"#/components/schemas/RecordData"}
+    postInternalNotificationsClaimResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postInternalNotificationsClaimData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postInternalNotificationsResultsData: {"$ref":"#/components/schemas/RecordData"}
+    postInternalNotificationsResultsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postInternalNotificationsResultsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getEvidenceData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getEvidenceResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getEvidenceData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postEvidenceData: {"$ref":"#/components/schemas/RecordData"}
+    postEvidenceResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postEvidenceData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getEvidenceVerificationsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getEvidenceVerificationsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getEvidenceVerificationsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postEvidenceVerificationsByIdChecksData: {"$ref":"#/components/schemas/RecordData"}
+    postEvidenceVerificationsByIdChecksResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postEvidenceVerificationsByIdChecksData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postEvidenceVerificationsByIdClaimData: {"$ref":"#/components/schemas/RecordData"}
+    postEvidenceVerificationsByIdClaimResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postEvidenceVerificationsByIdClaimData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postEvidenceVerificationsByIdDecisionData: {"$ref":"#/components/schemas/RecordData"}
+    postEvidenceVerificationsByIdDecisionResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postEvidenceVerificationsByIdDecisionData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postEvidenceByIdSubmitVerificationData: {"$ref":"#/components/schemas/RecordData"}
+    postEvidenceByIdSubmitVerificationResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postEvidenceByIdSubmitVerificationData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postFileAccessGrantsByIdRevokeData: {"$ref":"#/components/schemas/RecordData"}
+    postFileAccessGrantsByIdRevokeResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postFileAccessGrantsByIdRevokeData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getFilesData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getFilesResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getFilesData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postFilesByIdAccessGrantsData: {"$ref":"#/components/schemas/RecordData"}
+    postFilesByIdAccessGrantsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postFilesByIdAccessGrantsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postFilesByIdDownloadIntentsData: {"$ref":"#/components/schemas/RecordData"}
+    postFilesByIdDownloadIntentsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postFilesByIdDownloadIntentsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postFilesUploadIntentsData: {"$ref":"#/components/schemas/RecordData"}
+    postFilesUploadIntentsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postFilesUploadIntentsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postIdentityRegisterData: {"type":"object","additionalProperties":false,"required":["userAccountId","partyId","status"],"properties":{"userAccountId":{"type":"string","format":"uuid"},"partyId":{"type":"string","format":"uuid"},"status":{"const":"ACTIVE"}}}
+    postIdentityRegisterResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postIdentityRegisterData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getMeData: {"type":"object","additionalProperties":false,"required":["userAccountId","partyId","permissions","roles"],"properties":{"userAccountId":{"type":"string","format":"uuid"},"partyId":{"type":"string","format":"uuid"},"permissions":{"type":"array","uniqueItems":true,"items":{"type":"string"}},"roles":{"type":"array","uniqueItems":true,"items":{"type":"string"}},"organizationId":{"anyOf":[{"type":"string","format":"uuid"},{"type":"null"}]},"assuranceLevel":{"type":"integer","minimum":0}}}
+    getMeResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getMeData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getMeProfessionalReverificationAlertsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getMeProfessionalReverificationAlertsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getMeProfessionalReverificationAlertsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postMeProfessionalReverificationAlertsByIdAcknowledgeData: {"$ref":"#/components/schemas/RecordData"}
+    postMeProfessionalReverificationAlertsByIdAcknowledgeResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postMeProfessionalReverificationAlertsByIdAcknowledgeData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getMembershipApplicationsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getMembershipApplicationsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getMembershipApplicationsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postMembershipApplicationsData: {"$ref":"#/components/schemas/RecordData"}
+    postMembershipApplicationsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postMembershipApplicationsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putMembershipApplicationsByIdStepsById2Data: {"$ref":"#/components/schemas/RecordData"}
+    putMembershipApplicationsByIdStepsById2Response: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putMembershipApplicationsByIdStepsById2Data"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postMembershipApplicationsByIdSubmitData: {"$ref":"#/components/schemas/RecordData"}
+    postMembershipApplicationsByIdSubmitResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postMembershipApplicationsByIdSubmitData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postMembershipDecisionsByIdData: {"$ref":"#/components/schemas/RecordData"}
+    postMembershipDecisionsByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postMembershipDecisionsByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getMembershipReviewsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getMembershipReviewsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getMembershipReviewsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postMembershipReviewsByIdClaimData: {"$ref":"#/components/schemas/RecordData"}
+    postMembershipReviewsByIdClaimResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postMembershipReviewsByIdClaimData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postMembershipReviewsByIdRecommendationData: {"$ref":"#/components/schemas/RecordData"}
+    postMembershipReviewsByIdRecommendationResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postMembershipReviewsByIdRecommendationData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getMembershipTypesData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getMembershipTypesResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getMembershipTypesData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getMetaData: {"type":"object","additionalProperties":false,"required":["service","version","environment","systemOfRecord"],"properties":{"service":{"const":"eim-backend"},"version":{"type":"string"},"environment":{"type":"string"},"systemOfRecord":{"const":"PostgreSQL 16"}}}
+    getMetaResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getMetaData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postNotificationDeliveryDeadLettersByIdResolutionData: {"$ref":"#/components/schemas/RecordData"}
+    postNotificationDeliveryDeadLettersByIdResolutionResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postNotificationDeliveryDeadLettersByIdResolutionData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postNotificationDeliveryIncidentsByIdResolutionData: {"$ref":"#/components/schemas/RecordData"}
+    postNotificationDeliveryIncidentsByIdResolutionResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postNotificationDeliveryIncidentsByIdResolutionData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getNotificationDeliveryOperationsData: {"$ref":"#/components/schemas/RecordData"}
+    getNotificationDeliveryOperationsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getNotificationDeliveryOperationsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postNotificationDeliveryOperationsSloEvaluateData: {"$ref":"#/components/schemas/RecordData"}
+    postNotificationDeliveryOperationsSloEvaluateResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postNotificationDeliveryOperationsSloEvaluateData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getPrivacyPreferencesData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getPrivacyPreferencesResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getPrivacyPreferencesData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putPrivacyPreferencesData: {"$ref":"#/components/schemas/RecordData"}
+    putPrivacyPreferencesResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putPrivacyPreferencesData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalEvidenceLinksData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalEvidenceLinksResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalEvidenceLinksData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalEvidenceLinksData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalEvidenceLinksResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalEvidenceLinksData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalEvidenceStrengthData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalEvidenceStrengthResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalEvidenceStrengthData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalEvidenceStrengthRecalculateData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalEvidenceStrengthRecalculateResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalEvidenceStrengthRecalculateData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalExperiencesData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalExperiencesResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalExperiencesData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalExperiencesConsultingData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalExperiencesConsultingResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalExperiencesConsultingData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putProfessionalExperiencesConsultingByIdData: {"$ref":"#/components/schemas/RecordData"}
+    putProfessionalExperiencesConsultingByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putProfessionalExperiencesConsultingByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalExperiencesEmploymentsData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalExperiencesEmploymentsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalExperiencesEmploymentsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putProfessionalExperiencesEmploymentsByIdData: {"$ref":"#/components/schemas/RecordData"}
+    putProfessionalExperiencesEmploymentsByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putProfessionalExperiencesEmploymentsByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalExperiencesProjectsData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalExperiencesProjectsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalExperiencesProjectsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalExperiencesProjectsConsultingData: {"$ref":"#/components/schemas/RecordData"}
+    getProfessionalExperiencesProjectsConsultingResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalExperiencesProjectsConsultingData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putProfessionalExperiencesProjectsByIdData: {"$ref":"#/components/schemas/RecordData"}
+    putProfessionalExperiencesProjectsByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putProfessionalExperiencesProjectsByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalExperiencesQualificationsData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalExperiencesQualificationsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalExperiencesQualificationsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putProfessionalExperiencesQualificationsByIdData: {"$ref":"#/components/schemas/RecordData"}
+    putProfessionalExperiencesQualificationsByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putProfessionalExperiencesQualificationsByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalExperiencesResearchData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalExperiencesResearchResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalExperiencesResearchData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putProfessionalExperiencesResearchByIdData: {"$ref":"#/components/schemas/RecordData"}
+    putProfessionalExperiencesResearchByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putProfessionalExperiencesResearchByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalExperiencesTrainingData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalExperiencesTrainingResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalExperiencesTrainingData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalExperiencesTrainingResearchData: {"$ref":"#/components/schemas/RecordData"}
+    getProfessionalExperiencesTrainingResearchResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalExperiencesTrainingResearchData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putProfessionalExperiencesTrainingByIdData: {"$ref":"#/components/schemas/RecordData"}
+    putProfessionalExperiencesTrainingByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putProfessionalExperiencesTrainingByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalFingerprintStrengthData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalFingerprintStrengthResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalFingerprintStrengthData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalFingerprintStrengthRecalculateData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalFingerprintStrengthRecalculateResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalFingerprintStrengthRecalculateData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalFingerprintsData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalFingerprintsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalFingerprintsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putProfessionalFingerprintsByIdData: {"$ref":"#/components/schemas/RecordData"}
+    putProfessionalFingerprintsByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putProfessionalFingerprintsByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalProfileData: {"$ref":"#/components/schemas/RecordData"}
+    getProfessionalProfileResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalProfileData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    putProfessionalProfileData: {"$ref":"#/components/schemas/RecordData"}
+    putProfessionalProfileResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/putProfessionalProfileData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalProfilePublicationReadinessData: {"$ref":"#/components/schemas/RecordData"}
+    getProfessionalProfilePublicationReadinessResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalProfilePublicationReadinessData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalProfilePublicationRequestsData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalProfilePublicationRequestsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalProfilePublicationRequestsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalProfilePublicationRequestsByIdAmendmentsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalProfilePublicationRequestsByIdAmendmentsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalProfilePublicationRequestsByIdAmendmentsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalProfilePublicationRequestsByIdAmendmentsData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalProfilePublicationRequestsByIdAmendmentsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalProfilePublicationRequestsByIdAmendmentsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalProfilePublicationRequestsByIdConsolidationData: {"$ref":"#/components/schemas/RecordData"}
+    getProfessionalProfilePublicationRequestsByIdConsolidationResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalProfilePublicationRequestsByIdConsolidationData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalProfilePublicationRequestsByIdFindingsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalProfilePublicationRequestsByIdFindingsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalProfilePublicationRequestsByIdFindingsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalProfilePublicationRequestsByIdFindingsById2ResponsesData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalProfilePublicationRequestsByIdFindingsById2ResponsesResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalProfilePublicationRequestsByIdFindingsById2ResponsesData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationDecisionsByIdData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationDecisionsByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationDecisionsByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalPublicationReviewsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalPublicationReviewsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalPublicationReviewsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalPublicationReviewsByIdData: {"$ref":"#/components/schemas/RecordData"}
+    getProfessionalPublicationReviewsByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalPublicationReviewsByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalPublicationReviewsByIdAmendmentsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalPublicationReviewsByIdAmendmentsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalPublicationReviewsByIdAmendmentsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationReviewsByIdAmendmentsById2DecisionData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationReviewsByIdAmendmentsById2DecisionResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationReviewsByIdAmendmentsById2DecisionData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationReviewsByIdClaimData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationReviewsByIdClaimResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationReviewsByIdClaimData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalPublicationReviewsByIdConsolidationData: {"$ref":"#/components/schemas/RecordData"}
+    getProfessionalPublicationReviewsByIdConsolidationResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalPublicationReviewsByIdConsolidationData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationReviewsByIdConsolidationData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationReviewsByIdConsolidationResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationReviewsByIdConsolidationData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationReviewsByIdEvidenceById2FilesById3DownloadIntentsData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationReviewsByIdEvidenceById2FilesById3DownloadIntentsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationReviewsByIdEvidenceById2FilesById3DownloadIntentsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalPublicationReviewsByIdFindingsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalPublicationReviewsByIdFindingsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalPublicationReviewsByIdFindingsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationReviewsByIdFindingsData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationReviewsByIdFindingsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationReviewsByIdFindingsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationReviewsByIdFindingsById2ResolutionData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationReviewsByIdFindingsById2ResolutionResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationReviewsByIdFindingsById2ResolutionData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationReviewsByIdRecommendationData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationReviewsByIdRecommendationResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationReviewsByIdRecommendationData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalPublicationsData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalPublicationsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalPublicationsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationsByIdLifecycleData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationsByIdLifecycleResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationsByIdLifecycleData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getProfessionalPublicationsReverificationData: {"type":"array","items":{"$ref":"#/components/schemas/RecordData"}}
+    getProfessionalPublicationsReverificationResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getProfessionalPublicationsReverificationData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    postProfessionalPublicationsReverificationRunData: {"$ref":"#/components/schemas/RecordData"}
+    postProfessionalPublicationsReverificationRunResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/postProfessionalPublicationsReverificationRunData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getPublicPartiesByIdData: {"$ref":"#/components/schemas/RecordData"}
+    getPublicPartiesByIdResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getPublicPartiesByIdData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    getPublicProfessionalsData: {"type":"object","additionalProperties":false,"required":["items","page","pageSize"],"properties":{"items":{"type":"array","items":{"$ref":"#/components/schemas/RecordData"}},"page":{"type":"integer","minimum":1},"pageSize":{"type":"integer","minimum":1,"maximum":50},"total":{"type":"integer","minimum":0}}}
+    getPublicProfessionalsResponse: {"type":"object","additionalProperties":false,"required":["data","meta"],"properties":{"data":{"$ref":"#/components/schemas/getPublicProfessionalsData"},"meta":{"$ref":"#/components/schemas/ResponseMeta"}}}
+    parseAccessGrantCommand: {"type":"object","additionalProperties":false,"required":["granteePartyId","purposeCode","expiresAt"],"properties":{"granteePartyId":{"type":"string","format":"uuid"},"purposeCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"expiresAt":{"type":"string","format":"date-time","description":"Must be in the future and no more than 90 days ahead."}}}
+    parseCheckCommand: {"type":"object","additionalProperties":false,"required":["checkTypeCode","resultCode","notes"],"properties":{"checkTypeCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":50},"resultCode":{"type":"string","enum":["PASS","PARTIAL","FAIL","INCONCLUSIVE"]},"notes":{"type":"string","minLength":1,"maxLength":4000},"responseReference":{"anyOf":[{"type":"string","minLength":0,"maxLength":1000},{"type":"null"}]}}}
+    parseConsultingCommand: {"type":"object","additionalProperties":false,"required":["engagementTitleAr","durationDays"],"properties":{"engagementTitleAr":{"type":"string","minLength":1,"maxLength":300},"engagementTitleEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":300},{"type":"null"}]},"clientTypeCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"countryCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"durationDays":{"type":"integer","minimum":1},"startedAt":{"anyOf":[{"type":"string","format":"date"},{"type":"null"}]},"endedAt":{"anyOf":[{"type":"string","format":"date"},{"type":"null"}]},"deliveryModeCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"outcomeSummaryAr":{"anyOf":[{"type":"string","minLength":0,"maxLength":4000},{"type":"null"}]},"isPublic":{"type":"boolean"},"expectedRowVersion":{"anyOf":[{"type":"integer","minimum":1},{"type":"null"}]},"changeSummary":{"anyOf":[{"type":"string","minLength":0,"maxLength":1000},{"type":"null"}]}}}
+    parseCreateApplicationCommand: {"type":"object","additionalProperties":false,"required":["membershipTypeCode"],"properties":{"membershipTypeCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":40}}}
+    parseDeadLetterResolutionCommand: {"type":"object","additionalProperties":false,"required":["action","reason"],"properties":{"action":{"type":"string","enum":["REQUEUE","DISCARD"]},"reason":{"type":"string","minLength":20,"maxLength":2000}}}
+    parseDecisionCommand: {"type":"object","additionalProperties":false,"required":["decisionCode","reasonCode","comment"],"properties":{"decisionCode":{"type":"string","enum":["APPROVED","REJECTED"]},"reasonCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":50},"comment":{"type":"string","minLength":1,"maxLength":2000}}}
+    parseDeliveryIncidentResolutionCommand: {"type":"object","additionalProperties":false,"required":["action","reason"],"properties":{"action":{"type":"string","enum":["ACKNOWLEDGE","RESOLVE"]},"reason":{"type":"string","minLength":20,"maxLength":2000}}}
+    parseDownloadConsumeCommand: {"type":"object","additionalProperties":false,"required":["sessionId","downloadToken"],"properties":{"sessionId":{"type":"string","format":"uuid"},"downloadToken":{"type":"string","minLength":20,"maxLength":4096}}}
+    parseEmploymentCommand: {"type":"object","additionalProperties":false,"required":["employerNameAr","jobTitleAr","startedAt"],"properties":{"employerNameAr":{"type":"string","minLength":1,"maxLength":260},"employerNameEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":260},{"type":"null"}]},"jobTitleAr":{"type":"string","minLength":1,"maxLength":220},"jobTitleEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":220},{"type":"null"}]},"jobLevelCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"experienceTypeCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"countryCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"startedAt":{"type":"string","format":"date"},"endedAt":{"anyOf":[{"type":"string","format":"date"},{"type":"null"}]},"responsibilitiesAr":{"anyOf":[{"type":"string","minLength":0,"maxLength":4000},{"type":"null"}]},"outcomesAr":{"anyOf":[{"type":"string","minLength":0,"maxLength":4000},{"type":"null"}]},"isCurrent":{"type":"boolean"},"isPublic":{"type":"boolean"},"expectedRowVersion":{"anyOf":[{"type":"integer","minimum":1},{"type":"null"}]},"changeSummary":{"anyOf":[{"type":"string","minLength":0,"maxLength":1000},{"type":"null"}]}}}
+    parseEvidenceInputCommand: {"type":"object","additionalProperties":false,"required":["fileId","evidenceTypeCode","titleAr"],"properties":{"fileId":{"type":"string","format":"uuid"},"evidenceTypeCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"titleAr":{"type":"string","minLength":1,"maxLength":300},"titleEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":300},{"type":"null"}]},"descriptionAr":{"anyOf":[{"type":"string","minLength":0,"maxLength":4000},{"type":"null"}]}}}
+    parseEvidenceLinkCommand: {"type":"object","additionalProperties":false,"required":["evidenceItemId","targetEntityType","targetEntityId","relationshipCode","relevanceScore"],"properties":{"evidenceItemId":{"type":"string","format":"uuid"},"targetEntityType":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"targetEntityId":{"type":"string","format":"uuid"},"relationshipCode":{"type":"string","enum":["SUPPORTS","PROVES","UPDATES","REPLACES"]},"relevanceScore":{"type":"number","minimum":0,"maximum":1}}}
+    parseFileIntentCommand: {"type":"object","additionalProperties":false,"required":["originalFileName","mediaType","sizeBytes","sha256","confidentialityLevelCode"],"properties":{"originalFileName":{"type":"string","minLength":1,"maxLength":240},"mediaType":{"type":"string","enum":["application/pdf","image/jpeg","image/png","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]},"sizeBytes":{"type":"integer","minimum":1,"maximum":10485760},"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},"confidentialityLevelCode":{"type":"string","enum":["PUBLIC","ALLOWED_INFORMATION_ONLY","AUTHORIZED_CLIENTS","PLATFORM_ADMIN_ONLY"]}}}
+    parseFingerprintCommand: {"type":"object","additionalProperties":false,"required":["fingerprintCode","titleAr","taxonomyNodeCode","experienceLevelCode","expertRoleCode"],"properties":{"fingerprintCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"titleAr":{"type":"string","minLength":1,"maxLength":300},"titleEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":300},{"type":"null"}]},"taxonomyNodeCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"experienceLevelCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"expertRoleCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"certaintyScore":{"anyOf":[{"type":"number","minimum":0,"maximum":1},{"type":"null"}]},"expectedRowVersion":{"anyOf":[{"type":"integer","minimum":1},{"type":"null"}]},"changeSummary":{"anyOf":[{"type":"string","minLength":0,"maxLength":1000},{"type":"null"}]}}}
+    parseFingerprintStrengthCommand: {"type":"object","additionalProperties":false,"required":["professionalFingerprintId"],"properties":{"professionalFingerprintId":{"type":"string","format":"uuid"}}}
+    parseNotificationClaimCommand: {"type":"object","additionalProperties":false,"required":["providerCode"],"properties":{"providerCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"batchSize":{"type":"integer","minimum":1,"maximum":50}}}
+    parseNotificationResultCommand: {"type":"object","additionalProperties":false,"required":["messageId","leaseToken","providerCode","outcomeCode"],"properties":{"messageId":{"type":"string","format":"uuid"},"leaseToken":{"type":"string","pattern":"^[0-9a-f]{64}$"},"providerCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"outcomeCode":{"type":"string","enum":["ACCEPTED","DELIVERED","TEMPORARY_FAILURE","PERMANENT_FAILURE","BOUNCED","REJECTED","RATE_LIMITED"]},"providerReference":{"anyOf":[{"type":"string","minLength":0,"maxLength":500},{"type":"null"}]},"responseCode":{"anyOf":[{"type":"string","minLength":0,"maxLength":100},{"type":"null"}]}}}
+    parsePrivacyPreferenceCommand: {"type":"object","additionalProperties":false,"required":["resourceType","resourceId","fieldPath","visibilityCode"],"properties":{"resourceType":{"type":"string","enum":["PARTY_PROFILE","EVIDENCE_ITEM","FILE"]},"resourceId":{"type":"string","format":"uuid"},"fieldPath":{"type":"string","pattern":"^[a-z][a-z0-9_.]*$","maxLength":120},"visibilityCode":{"type":"string","enum":["PUBLIC","MEMBERS","AUTHORIZED","PLATFORM_ADMIN","PRIVATE"]},"allowedRoleCodes":{"type":"array","uniqueItems":true,"items":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60}},"reason":{"anyOf":[{"type":"string","minLength":0,"maxLength":1000},{"type":"null"}]}}}
+    parseProfileCommand: {"type":"object","additionalProperties":false,"required":[],"properties":{"currentJobTitleAr":{"anyOf":[{"type":"string","minLength":0,"maxLength":220},{"type":"null"}]},"currentJobTitleEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":220},{"type":"null"}]},"jobLevelCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"totalExperienceYears":{"anyOf":[{"type":"integer","minimum":0,"maximum":80},{"type":"null"}]},"expectedRowVersion":{"anyOf":[{"type":"integer","minimum":1},{"type":"null"}]}}}
+    parseProjectCommand: {"type":"object","additionalProperties":false,"required":["projectNameAr","executionYear"],"properties":{"projectNameAr":{"type":"string","minLength":1,"maxLength":300},"projectNameEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":300},{"type":"null"}]},"clientNameAr":{"anyOf":[{"type":"string","minLength":0,"maxLength":260},{"type":"null"}]},"countryCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"executionYear":{"type":"integer","minimum":1900,"maximum":2200},"durationDays":{"anyOf":[{"type":"integer","minimum":1},{"type":"null"}]},"expertRoleCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"roleDescriptionAr":{"anyOf":[{"type":"string","minLength":0,"maxLength":4000},{"type":"null"}]},"verifiedOutcomeAr":{"anyOf":[{"type":"string","minLength":0,"maxLength":4000},{"type":"null"}]},"isPublic":{"type":"boolean"},"expectedRowVersion":{"anyOf":[{"type":"integer","minimum":1},{"type":"null"}]},"changeSummary":{"anyOf":[{"type":"string","minLength":0,"maxLength":1000},{"type":"null"}]}}}
+    parsePublicationAmendmentCommand: {"type":"object","additionalProperties":false,"required":["findingId","summary","changeSet"],"properties":{"findingId":{"type":"string","format":"uuid"},"summary":{"type":"string","minLength":1,"maxLength":2000},"changeSet":{"type":"object","minProperties":1,"maxProperties":30,"additionalProperties":true}}}
+    parsePublicationAmendmentDecisionCommand: {"type":"object","additionalProperties":false,"required":["decision","comment"],"properties":{"decision":{"type":"string","enum":["ACCEPT","REJECT"]},"comment":{"type":"string","minLength":1,"maxLength":2000}}}
+    parsePublicationDecisionCommand: {"type":"object","additionalProperties":false,"required":["decision","comment"],"properties":{"decision":{"type":"string","enum":["APPROVED","REJECTED"]},"comment":{"type":"string","minLength":1,"maxLength":2000}}}
+    parsePublicationFindingCommand: {"type":"object","additionalProperties":false,"required":["targetType","categoryCode","severityCode","description","requiredAction"],"properties":{"targetType":{"type":"string","enum":["PROFILE","FINGERPRINT","EVIDENCE","READINESS"]},"targetId":{"anyOf":[{"type":"string","format":"uuid"},{"type":"null"}]},"categoryCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"severityCode":{"type":"string","enum":["INFO","MINOR","MAJOR","CRITICAL"]},"description":{"type":"string","minLength":1,"maxLength":3000},"requiredAction":{"type":"string","minLength":1,"maxLength":2000}}}
+    parsePublicationFindingResolutionCommand: {"type":"object","additionalProperties":false,"required":["action","comment"],"properties":{"action":{"type":"string","enum":["RESOLVE","REOPEN"]},"comment":{"type":"string","minLength":1,"maxLength":2000}}}
+    parsePublicationFindingResponseCommand: {"type":"object","additionalProperties":false,"required":["response"],"properties":{"response":{"type":"string","minLength":1,"maxLength":3000}}}
+    parsePublicationLifecycleCommand: {"type":"object","additionalProperties":false,"required":["action","reason"],"properties":{"action":{"type":"string","enum":["SUSPEND","RESTORE","REVOKE"]},"reason":{"type":"string","minLength":20,"maxLength":2000}}}
+    parsePublicationReviewCommand: {"type":"object","additionalProperties":false,"required":["recommendation","comment"],"properties":{"recommendation":{"type":"string","enum":["APPROVE","REJECT"]},"comment":{"type":"string","minLength":1,"maxLength":2000}}}
+    parsePublicationSubmitCommand: {"type":"object","additionalProperties":false,"required":["expectedRowVersion"],"properties":{"expectedRowVersion":{"type":"integer","minimum":1}}}
+    parseQualificationCommand: {"type":"object","additionalProperties":false,"required":["qualificationTypeCode","fieldOfStudyAr","institutionNameAr"],"properties":{"qualificationTypeCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"fieldOfStudyAr":{"type":"string","minLength":1,"maxLength":220},"fieldOfStudyEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":220},{"type":"null"}]},"institutionNameAr":{"type":"string","minLength":1,"maxLength":260},"institutionNameEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":260},{"type":"null"}]},"countryCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"graduationYear":{"anyOf":[{"type":"integer","minimum":1900,"maximum":2200},{"type":"null"}]},"isPublic":{"type":"boolean"},"expectedRowVersion":{"anyOf":[{"type":"integer","minimum":1},{"type":"null"}]},"changeSummary":{"anyOf":[{"type":"string","minLength":0,"maxLength":1000},{"type":"null"}]}}}
+    parseRegistrationInputCommand: {"type":"object","additionalProperties":false,"required":["firstNameAr","lastNameAr","displayNameAr"],"properties":{"firstNameAr":{"type":"string","minLength":1,"maxLength":100},"lastNameAr":{"type":"string","minLength":1,"maxLength":100},"displayNameAr":{"type":"string","minLength":1,"maxLength":240},"displayNameEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":240},{"type":"null"}]}}}
+    parseResearchCommand: {"type":"object","additionalProperties":false,"required":["researchTitleAr","researchRoleCode","expectedRowVersion"],"properties":{"researchTitleAr":{"type":"string","minLength":1,"maxLength":320},"researchTitleEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":320},{"type":"null"}]},"researchRoleCode":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"startedAt":{"anyOf":[{"type":"string","format":"date"},{"type":"null"}]},"endedAt":{"anyOf":[{"type":"string","format":"date"},{"type":"null"}]},"outcomeSummaryAr":{"anyOf":[{"type":"string","minLength":0,"maxLength":4000},{"type":"null"}]},"isPublic":{"type":"boolean"},"expectedRowVersion":{"type":"integer","minimum":1},"changeSummary":{"anyOf":[{"type":"string","minLength":0,"maxLength":1000},{"type":"null"}]}}}
+    parseReviewCommand: {"type":"object","additionalProperties":false,"required":["recommendationCode","comments"],"properties":{"recommendationCode":{"type":"string","enum":["APPROVE","REJECT","MORE_INFO_REQUIRED"]},"comments":{"type":"string","minLength":1,"maxLength":2000}}}
+    parseReviewDocumentAccessCommand: {"type":"object","additionalProperties":false,"required":["reason"],"properties":{"reason":{"type":"string","minLength":20,"maxLength":1000}}}
+    parseRevocationCommand: {"type":"object","additionalProperties":false,"required":["reason"],"properties":{"reason":{"type":"string","minLength":1,"maxLength":1000}}}
+    parseSaveStepCommand: {"type":"object","additionalProperties":false,"required":["payload","complete","expectedRowVersion"],"properties":{"payload":{"type":"object","additionalProperties":true},"complete":{"type":"boolean"},"expectedRowVersion":{"type":"integer","minimum":1}}}
+    parseScanResultCommand: {"type":"object","additionalProperties":false,"required":["fileId","resultCode","scannerReference"],"properties":{"fileId":{"type":"string","format":"uuid"},"resultCode":{"type":"string","enum":["SAFE","QUARANTINED","REJECTED"]},"scannerReference":{"type":"string","minLength":1,"maxLength":500}}}
+    parseStrengthTargetCommand: {"type":"object","additionalProperties":false,"required":["targetEntityType","targetEntityId"],"properties":{"targetEntityType":{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},"targetEntityId":{"type":"string","format":"uuid"}}}
+    parseSubmitApplicationCommand: {"type":"object","additionalProperties":false,"required":["expectedRowVersion"],"properties":{"expectedRowVersion":{"type":"integer","minimum":1}}}
+    parseTrainingCommand: {"type":"object","additionalProperties":false,"required":["courseNameAr","expectedRowVersion"],"properties":{"courseNameAr":{"type":"string","minLength":1,"maxLength":300},"courseNameEn":{"anyOf":[{"type":"string","minLength":0,"maxLength":300},{"type":"null"}]},"deliveryModeCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"courseLevelCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"deliveryDate":{"anyOf":[{"type":"string","format":"date"},{"type":"null"}]},"durationHours":{"anyOf":[{"type":"number","minimum":0.01,"maximum":10000},{"type":"null"}]},"participantCount":{"type":"integer","minimum":0,"maximum":1000000},"ratingValue":{"anyOf":[{"type":"number","minimum":1,"maximum":5},{"type":"null"}]},"countryCode":{"anyOf":[{"type":"string","pattern":"^[A-Z][A-Z0-9_]*$","maxLength":60},{"type":"null"}]},"isPublic":{"type":"boolean"},"expectedRowVersion":{"type":"integer","minimum":1},"changeSummary":{"anyOf":[{"type":"string","minLength":0,"maxLength":1000},{"type":"null"}]}}}
+    parseUploadCompletionCommand: {"type":"object","additionalProperties":false,"required":["sessionId","uploadToken","mediaType","sha256","sizeBytes"],"properties":{"sessionId":{"type":"string","format":"uuid"},"uploadToken":{"type":"string","minLength":20,"maxLength":4096},"mediaType":{"type":"string","enum":["application/pdf","image/jpeg","image/png","application/vnd.openxmlformats-officedocument.wordprocessingml.document"]},"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},"sizeBytes":{"type":"integer","minimum":1}}}
+    parseVerificationDecisionCommand: {"type":"object","additionalProperties":false,"required":["decisionCode","rationale"],"properties":{"decisionCode":{"type":"string","enum":["VERIFIED","PARTIALLY_VERIFIED","UNVERIFIED","REJECTED"]},"rationale":{"type":"string","minLength":1,"maxLength":4000},"validUntil":{"anyOf":[{"type":"string","format":"date"},{"type":"null"}]}}}

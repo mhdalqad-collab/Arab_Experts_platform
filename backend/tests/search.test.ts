@@ -1,0 +1,8 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { attachPublishedStrength, parsePublicSearch } from "../src/search.js";
+
+test("public search applies bounded defaults",()=>{assert.deepEqual(parsePublicSearch(new URLSearchParams()),{query:null,membershipTypeCode:null,taxonomyNodeCode:null,experienceLevelCode:null,expertRoleCode:null,page:1,pageSize:20});});
+test("public search normalizes filters and pagination",()=>{assert.deepEqual(parsePublicSearch(new URLSearchParams("q=%D8%AE%D8%A8%D9%8A%D8%B1&membershipTypeCode=EXPERT&taxonomyNodeCode=TECH&page=2&pageSize=50")),{query:"خبير",membershipTypeCode:"EXPERT",taxonomyNodeCode:"TECH",experienceLevelCode:null,expertRoleCode:null,page:2,pageSize:50});});
+test("public search rejects expensive or malformed input",()=>{assert.throws(()=>parsePublicSearch(new URLSearchParams(`q=${"x".repeat(121)}`)));assert.throws(()=>parsePublicSearch(new URLSearchParams("pageSize=51")));assert.throws(()=>parsePublicSearch(new URLSearchParams("taxonomyNodeCode=bad code")));});
+test("public search exposes only an approved strength summary",()=>{const key="p:FP",strengths=new Map([[key,{party_id:"p",fingerprint_code:"FP",composite_score:.8,confidence_band_code:"VERY_HIGH",evidence_score:.9,context_diversity_score:.7,role_contribution_score:1,practice_recency_score:.8}]]);const result=attachPublishedStrength([{code:"FP",titleAr:"خبير"}],"p",strengths);assert.deepEqual(result[0]?.strength,{compositeScore:.8,confidenceBandCode:"VERY_HIGH",components:{evidence:.9,contextDiversity:.7,roleContribution:1,practiceRecency:.8}});assert.equal("evidence" in (result[0] as Record<string,unknown>),false);});

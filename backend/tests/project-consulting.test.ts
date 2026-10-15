@@ -1,0 +1,3 @@
+import assert from"node:assert/strict";import test from"node:test";import{parseConsulting,parseProject}from"../src/project-consulting.js";
+test("project experience validates execution year and duration",()=>{assert.equal(parseProject({projectNameAr:"مشروع",executionYear:2025,durationDays:30}).durationDays,30);assert.throws(()=>parseProject({projectNameAr:"مشروع",executionYear:1800}));});
+test("consulting experience validates positive duration and period",()=>{assert.equal(parseConsulting({engagementTitleAr:"استشارة",durationDays:10,startedAt:"2025-01-01",endedAt:"2025-01-10"}).durationDays,10);assert.throws(()=>parseConsulting({engagementTitleAr:"استشارة",durationDays:10,startedAt:"2025-02-01",endedAt:"2025-01-01"}));});

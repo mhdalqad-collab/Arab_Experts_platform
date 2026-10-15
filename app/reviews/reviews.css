@@ -1,0 +1,25 @@
+:root{--navy:#123558;--blue:#287fb4;--line:#dce5ed;--muted:#687a8c}
+*{box-sizing:border-box}
+.reviews-shell{min-height:100vh;background:#f4f7fa;color:#172637;font-family:Tahoma,Arial,sans-serif;padding-bottom:60px}
+.reviews-shell>header{padding:22px clamp(20px,5vw,72px);display:flex;align-items:center;justify-content:space-between;gap:24px;background:#fff;border-bottom:1px solid var(--line)}
+.reviews-shell header span{font-size:12px;color:var(--blue);font-weight:700}
+.reviews-shell h1{font-size:24px;color:var(--navy);margin:5px 0 0}
+.reviews-shell nav{display:flex;gap:8px}
+.reviews-shell nav a,.review-meta button{padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--navy);text-decoration:none;cursor:pointer}
+.review-content{width:min(1100px,calc(100% - 32px));margin:32px auto}
+.review-meta{display:flex;align-items:center;gap:12px;margin-bottom:18px;color:var(--muted);font-size:13px}
+.review-meta strong{padding:5px 9px;border-radius:20px;background:#e8f3fa;color:var(--blue);font-size:11px}
+.review-meta button{margin-inline-start:auto}
+.review-message{padding:13px 15px;margin-bottom:16px;border:1px solid #d8e4ec;border-radius:11px;background:#fff;color:#526476}
+.review-list{display:grid;gap:12px}
+.review-list article{display:grid;grid-template-columns:minmax(220px,1fr) auto auto;align-items:center;gap:20px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:15px}
+.review-list h2{margin:7px 0;font-size:17px;color:var(--navy)}
+.review-list small{color:var(--muted)}
+.review-type{color:var(--blue);font-size:11px;font-weight:700}
+.review-status{padding:7px 10px;border-radius:20px;background:#fff5df;color:#8b6418;font-size:11px;font-weight:700}
+.review-status.under_review{background:#e8f3fa;color:#17658f}
+.review-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.review-actions button{padding:9px 12px;border:0;border-radius:8px;background:var(--navy);color:#fff;cursor:pointer}
+.review-actions .approve{background:#277a4b}.review-actions .changes{background:#b27a16}.review-actions .reject{background:#a83d3d}
+.review-actions button:disabled{opacity:.55;cursor:wait}
+@media(max-width:760px){.reviews-shell>header{align-items:flex-start;flex-direction:column}.review-list article{grid-template-columns:1fr}.review-actions{justify-content:flex-start}.review-meta{align-items:flex-start;flex-direction:column}.review-meta button{margin-inline-start:0}}

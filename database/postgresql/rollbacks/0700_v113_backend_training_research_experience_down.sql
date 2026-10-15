@@ -1,0 +1,6 @@
+BEGIN;
+ALTER TABLE professional.profile_record_versions DROP CONSTRAINT IF EXISTS profile_record_versions_record_type_code_check;ALTER TABLE professional.profile_record_versions ADD CONSTRAINT profile_record_versions_record_type_code_check CHECK(record_type_code IN('ACADEMIC_QUALIFICATION','EMPLOYMENT_EXPERIENCE','PROJECT_EXPERIENCE','CONSULTING_EXPERIENCE'));
+DROP TRIGGER IF EXISTS trg_training_experiences_updated_at ON professional.training_experiences;CREATE TRIGGER trg_training_experiences_updated_at BEFORE UPDATE ON professional.training_experiences FOR EACH ROW EXECUTE FUNCTION core.set_updated_at();
+DROP TRIGGER IF EXISTS trg_research_experiences_updated_at ON professional.research_experiences;CREATE TRIGGER trg_research_experiences_updated_at BEFORE UPDATE ON professional.research_experiences FOR EACH ROW EXECUTE FUNCTION core.set_updated_at();
+ALTER TABLE professional.training_experiences DROP COLUMN IF EXISTS archived_at,DROP COLUMN IF EXISTS row_version,DROP COLUMN IF EXISTS is_public;ALTER TABLE professional.research_experiences DROP COLUMN IF EXISTS archived_at,DROP COLUMN IF EXISTS row_version;
+DELETE FROM integration.schema_migrations WHERE migration_name='0700_v113_backend_training_research_experience';COMMIT;

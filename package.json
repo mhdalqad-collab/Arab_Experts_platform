@@ -1,0 +1,68 @@
+{
+  "name": "arab-experts-eim6",
+  "version": "0.1.14",
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "install:ci": "bash scripts/install-ci.sh",
+    "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vite",
+    "build": "npm run build:eim && bash scripts/build-verified.sh",
+    "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
+    "refactor:eim": "node scripts/refactor-eim.mjs",
+    "build:eim": "node scripts/build-eim-runtime.mjs",
+    "validate:eim": "node scripts/validate-eim.mjs",
+    "openapi:backend:generate": "node scripts/generate-backend-openapi.mjs",
+    "validate:openapi": "node scripts/validate-openapi.mjs",
+    "backend:build": "tsc -p backend/tsconfig.json",
+    "backend:test": "npm run backend:build && node --test backend/dist/tests/*.test.js",
+    "backend:start": "node backend/dist/src/server.js",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck && npm run validate:openapi && npm run backend:test && npm run build:eim && npm run validate:eim && npm run build && node --test tests/rendered-html.test.mjs tests/eim-architecture.test.mjs tests/eim-role-flows.test.mjs",
+    "validate:artifact": "bash scripts/validate-artifact.sh",
+    "deploy:preflight": "bash scripts/deployment-preflight.sh",
+    "deploy:smoke": "bash scripts/deployment-smoke-test.sh",
+    "security:baseline": "bash scripts/security-baseline.sh",
+    "release:sbom": "npm sbom --package-lock-only --sbom-format=cyclonedx --sbom-type=application > eim-v113-sbom.cdx.json",
+    "release:readiness": "node scripts/release-readiness-report.mjs",
+    "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern backend/dist --ignore-pattern .next",
+    "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
+    "test:postgresql": "bash database/postgresql/scripts/run-integration-tests.sh"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.2",
+    "jose": "^6.2.7",
+    "next": "16.2.12",
+    "pg": "^8.22.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sharp": "0.35.3"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.37.1",
+    "@cloudflare/workers-types": "4.20260702.1",
+    "@tailwindcss/postcss": "4.2.1",
+    "@types/node": "22.19.19",
+    "@types/pg": "^8.20.3",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "@vitejs/plugin-rsc": "0.5.26",
+    "drizzle-kit": "0.31.10",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.12",
+    "react-server-dom-webpack": "19.2.8",
+    "tailwindcss": "4.2.1",
+    "typescript": "5.9.3",
+    "vinext": "0.0.50",
+    "vite": "8.0.13",
+    "wrangler": "4.92.0"
+  },
+  "overrides": {
+    "postcss": "8.5.25",
+    "sharp": "0.35.3"
+  },
+  "type": "module",
+  "displayName": "شبكة الخبراء العرب EIM 6"
+}

@@ -1,0 +1,1 @@
+BEGIN;DROP FUNCTION IF EXISTS professional.recalculate_owned_evidence_strength(uuid,uuid,varchar,uuid,varchar);DROP TABLE IF EXISTS professional.evidence_strength_assessments;DELETE FROM integration.schema_migrations WHERE migration_name='0720_v113_backend_evidence_strength';COMMIT;

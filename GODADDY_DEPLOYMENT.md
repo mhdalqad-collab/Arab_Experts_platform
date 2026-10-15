@@ -82,7 +82,7 @@ Browser OIDC sessions and enterprise bearer-token identities remain separate con
 
 ## Validation and launch
 
-Local verification includes TypeScript, lint, the 111 existing frontend tests, 52 backend tests, nine new hosting/database/security tests, and three real HTTP tests against the production Next.js build in preview mode. All 22 web migrations were exercised in PGlite's PostgreSQL engine, including idempotence, rollback and persistence after closing/reopening the database. All 300 non-interpolated API SQL statements were planned against that schema. Storage tests use a mocked S3 client.
+Local verification includes TypeScript, lint, the 111 existing frontend tests, 52 backend tests, nine new hosting/database/security tests, and three real HTTP tests against the production Next.js build in preview mode. All 22 web migrations were exercised in PGlite's PostgreSQL engine, including idempotence, rollback and persistence after closing/reopening the database. All 300 non-interpolated API SQL statements were planned against that schema. Storage tests use a mocked S3 client. Production dependencies pass npm audit after updating Next.js and Sharp. The retained legacy Cloudflare/Vinext development toolchain still has audit findings; it is not the GoDaddy runtime and should not be exposed as a server.
 
 GitHub CI additionally has PostgreSQL 16 and a production HTTP integration test that creates sessions, saves a membership, restarts the app, verifies persistence and rejects cross-account access. Its result must be checked on the exact commit being deployed. The real identity provider callback, real storage provider and GoDaddy network/runtime are not proven by local tests.
 

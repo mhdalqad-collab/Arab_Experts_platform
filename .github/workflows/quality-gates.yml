@@ -51,6 +51,8 @@ jobs:
         env:
           HOSTING_TEST_DATABASE_URL: postgresql://eim_test:eim_test_password@127.0.0.1:5432/eim_test
       - run: npm run test:postgresql
+      - name: Install security scanner dependency
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
       - run: npm run security:baseline
       - run: npm audit --omit=dev --audit-level=high
       - run: npm sbom --sbom-format=cyclonedx > eim-v113-sbom.cdx.json

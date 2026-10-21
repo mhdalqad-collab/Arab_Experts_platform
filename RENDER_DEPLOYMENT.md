@@ -4,14 +4,14 @@ The existing Node.js server supports Render's assigned PORT and listens on 0.0.0
 
 ## Create the service
 
-In Render choose **New > Blueprint**, connect `mhdalqad-collab/Arab_Experts_platform`, and select **godaddy-preparation**. Render reads the root `render.yaml`. Review that the service plan is **Free** before deploying. No database or paid service is declared.
+In Render choose **New > Blueprint**, connect `mhdalqad-collab/Arab_Experts_platform`, and select **main**. Render reads the root `render.yaml`. Review that the service plan is **Free** before deploying. No database or paid service is declared.
 
 If you already created a Web Service, update that service instead of creating a duplicate. A manual Web Service does not automatically import render.yaml; use these settings:
 
 | Setting | Value |
 | --- | --- |
 | Runtime | Node |
-| Branch | godaddy-preparation |
+| Branch | main |
 | Root directory | Leave blank (repository root) |
 | Build command | `npm ci --include=dev && npm run build` |
 | Start command | `npm start` |

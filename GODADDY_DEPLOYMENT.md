@@ -23,7 +23,7 @@ No source archive files, AES resources, hosting accounts, DNS records or provide
 2. Select branch **`main`** and repository root as the app root.
 3. Use `npm run build` and `npm start`. Choose a supported Node 22 release, at least 22.13; Node 24 is also supported by this code.
 4. Add the Preview secret `DEPLOYMENT_MODE=preview`.
-5. Update Preview. Check the Arabic interface and `/health/live`.
+5. Set General settings > Root path to `/`. Update Preview, verify the homepage, then publish the tested version. The Node server serves the interface directly at `/` without redirecting to `/eim/index.html`; legacy index links remain supported. Check `/health/live` separately.
 
 In this mode the page shows a preview notice. Login, persistent APIs and the enterprise backend are disabled; `/health/ready` returns 503 by design. A Healthy hosting process only establishes that the preview is running. Do not enter real data into the browser-local demonstration flows.
 

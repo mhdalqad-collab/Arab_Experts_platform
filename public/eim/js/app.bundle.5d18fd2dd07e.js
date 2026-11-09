@@ -1120,7 +1120,7 @@ function toggleAuth(){location.href='/account'}
    النواة: دخول، نوع العضوية، سياقات، مساحة العمل، أعمالي، بحث
    ========================================================= */
 function rLogin(){return `<div class="authwrap"><div class="card authcard">
-  <div class="mark"><img src="./assets/nae-logo.svg" alt="" width="58" height="58"></div>
+  <div class="mark"><img src="/eim/assets/nae-logo.svg" alt="" width="58" height="58"></div>
   <h1 style="font-size:20px">الدخول والتسجيل</h1>
   <p style="font-size:12.5px;color:var(--muted);margin:6px 0 22px">استخدم بوابة الحساب الآمنة. إذا كان لديك حساب ستفتح مساحتك، وإذا كنت عضوًا جديدًا ستختار نوع العضوية ثم تبدأ إدخال بياناتها.</p>
   <button class="btn primary" style="width:100%;justify-content:center;margin-top:18px" onclick="location.href='/account'">الدخول الآمن أو فتح حساب ←</button>
@@ -2814,7 +2814,7 @@ function rHome(){return `
     <div class="home-network-art" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <div class="home-topline">
       <div class="home-brandline">
-        <img src="./assets/nae-logo.svg" alt="شعار شبكة الخبراء العرب" width="104" height="104">
+        <img src="/eim/assets/nae-logo.svg" alt="شعار شبكة الخبراء العرب" width="104" height="104">
         <div><b>شبكة الخبراء العرب</b><span>عقول عربية… أثر عالمي</span></div>
       </div>
       <div class="home-brand-actions">

@@ -1,6 +1,6 @@
 {
   "source": "EIM_5.15.0_stable.html",
-  "generatedAt": "2026-10-15T18:12:26.267Z",
+  "generatedAt": "2026-11-09T13:50:33.463Z",
   "css": [
     "00-foundations.css",
     "10-shell-components.css",
@@ -18,7 +18,7 @@
   "javascript": [
     "theme-init.js",
     "hosting-status.js",
-    "app.bundle.068a5f33925a.js"
+    "app.bundle.5d18fd2dd07e.js"
   ],
   "sourceModules": [
     "00-reference-lists.js",

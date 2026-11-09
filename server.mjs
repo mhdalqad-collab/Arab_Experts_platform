@@ -1,5 +1,6 @@
 import { createServer } from 'node:http';
 import next from 'next';
+import { readFile } from 'node:fs/promises';
 import { loadServerConfig } from './server/config.mjs';
 import { handleAuth, sameOriginMutation } from './server/auth.mjs';
 import { getWebPool } from './server/database.mjs';
@@ -11,6 +12,8 @@ const config = loadServerConfig();
 const application = next({ dev, hostname: '0.0.0.0', port: config.port });
 await application.prepare();
 const handle = application.getRequestHandler();
+const homeHtml = (await readFile(new URL('./public/eim/index.html', import.meta.url), 'utf8'))
+  .replace(/(src|href)="\.\//g, '$1="/eim/');
 let backend;
 if (process.env.ENABLE_DOMAIN_BACKEND === 'true') {
   const { createBackendApplication } = await import('./backend/dist/src/application.js');
@@ -25,6 +28,11 @@ const server = createServer(async (request, response) => {
     for (const key of Object.keys(request.headers)) if (key.startsWith('oai-authenticated-')) delete request.headers[key];
     const url = new URL(request.url || '/', 'http://internal');
     const pathname = decodeURIComponent(url.pathname).replace(/\\/g, '/');
+    if (pathname === '/' || pathname === '/index.html') {
+      if (!['GET', 'HEAD'].includes(request.method)) { response.writeHead(405, { Allow: 'GET, HEAD' }).end(); return; }
+      response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+      response.end(request.method === 'HEAD' ? undefined : homeHtml); return;
+    }
     if (pathname === '/internal' || pathname.startsWith('/internal/')) { response.writeHead(404).end(); return; }
     if (pathname === '/health/live') {
       response.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });

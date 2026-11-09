@@ -312,7 +312,7 @@ function rHome(){return `
     <div class="home-network-art" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <div class="home-topline">
       <div class="home-brandline">
-        <img src="./assets/nae-logo.svg" alt="شعار شبكة الخبراء العرب" width="104" height="104">
+        <img src="/eim/assets/nae-logo.svg" alt="شعار شبكة الخبراء العرب" width="104" height="104">
         <div><b>شبكة الخبراء العرب</b><span>عقول عربية… أثر عالمي</span></div>
       </div>
       <div class="home-brand-actions">

@@ -33,10 +33,22 @@ after(async () => {
   await Promise.race([exited, delay(12000, undefined, { ref: false })]);
   if (child.exitCode === null) child.kill('SIGKILL');
 });
-test('the production build redirects to EIM and serves the generated assets', async () => {
+test('the main domain serves EIM without redirects and loads its assets from the root URL', async () => {
   const root = await fetch(origin, { redirect:'manual' });
-  assert.ok([301,302,303,307,308].includes(root.status));
-  assert.equal(new URL(root.headers.get('location'),origin).pathname,'/eim/index.html');
+  assert.equal(root.status,200);
+  assert.equal(root.headers.get('location'),null);
+  assert.equal(root.headers.get('cache-control'),'no-store');
+  const home = await root.text();
+  assert.ok(home.includes('شبكة الخبراء العرب'));
+  const homeAssets = [...home.matchAll(/(?:src|href)="(\/eim\/(?:js|css|assets)\/[^"?#]+)"/g)].map(match=>match[1]);
+  assert.ok(homeAssets.length >= 5);
+  for (const asset of homeAssets) {
+    const response = await fetch(new URL(asset,origin));
+    assert.equal(response.status,200,asset);
+    assert.ok(!response.headers.get('content-type').includes('text/html'),asset);
+  }
+  assert.equal((await fetch(origin,{method:'HEAD'})).status,200);
+  assert.equal((await fetch(origin,{method:'POST'})).status,405);
   const page = await fetch(`${origin}/eim/index.html`);
   assert.equal(page.status,200);
   const html = await page.text();

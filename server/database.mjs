@@ -1,4 +1,5 @@
 import pg from 'pg';
+import { createMysqlPool } from './mysql.mjs';
 
 // Preserve the existing web API's SQL contracts while moving storage to PostgreSQL.
 // Tokenize literals/comments before translating placeholders; user values stay bound.
@@ -73,6 +74,8 @@ export function bindSql(sql, values) {
 }
 
 export function createWebPool(environment = process.env) {
+  if (environment.WEB_DATABASE_DRIVER === 'mysql') return createMysqlPool(environment);
+  if (environment.WEB_DATABASE_DRIVER && environment.WEB_DATABASE_DRIVER !== 'postgres') throw new Error('Unknown WEB_DATABASE_DRIVER');
   const connectionString = environment.WEB_DATABASE_URL;
   if (!connectionString) return null;
   const max = Number(environment.WEB_DATABASE_POOL_MAX || 5);

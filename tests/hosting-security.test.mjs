@@ -1,8 +1,15 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { loadServerConfig } from '../server/config.mjs';
-import { safeReturnPath, sameOriginMutation, appOrigin, readCookie } from '../server/auth.mjs';
+import { safeReturnPath, sameOriginMutation, appOrigin, readCookie, loginConnection } from '../server/auth.mjs';
 import { createObjectStorage } from '../server/storage.mjs';
+test('only configured login methods can select a provider connection', () => {
+  const environment={WEB_OIDC_GOOGLE_CONNECTION:'google-oauth2',WEB_OIDC_EMAIL_CONNECTION:'Username-Password-Authentication'};
+  assert.equal(loginConnection('google',environment),'google-oauth2');
+  assert.equal(loginConnection('email',environment),'Username-Password-Authentication');
+  assert.throws(()=>loginConnection('attacker',environment),/unavailable/);
+  assert.throws(()=>loginConnection('google',{}),/unavailable/);
+});
 
 test('production fails closed without services; preview is explicit and accepts assigned ports', () => {
   assert.throws(() => loadServerConfig({}), /Missing configuration/);

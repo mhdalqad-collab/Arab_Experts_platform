@@ -4,11 +4,17 @@ import { readFile } from 'node:fs/promises';
 import { loadServerConfig } from './server/config.mjs';
 import { handleAuth, sameOriginMutation } from './server/auth.mjs';
 import { getWebPool } from './server/database.mjs';
-import { WEB_SCHEMA_VERSION } from './server/migrate-web.mjs';
+import { WEB_SCHEMA_VERSION, migrateWebDatabase } from './server/migrate-web.mjs';
 
 const dev = process.argv.includes('--dev');
 process.env.NODE_ENV = dev ? 'development' : 'production';
 const config = loadServerConfig();
+if (process.env.WEB_DATABASE_SETUP === 'true') {
+  if (config.mode !== 'preview' || process.env.WEB_DATABASE_DRIVER !== 'mysql') throw new Error('Database setup is allowed only in MySQL preview mode');
+  const client = await getWebPool().connect();
+  try { console.log('Arab Experts database setup complete', await migrateWebDatabase(client)); }
+  finally { client.release(); }
+}
 const application = next({ dev, hostname: '0.0.0.0', port: config.port });
 await application.prepare();
 const handle = application.getRequestHandler();

@@ -9,11 +9,12 @@ import { createWebPool } from '../server/database.mjs';
 import { migrateWebDatabase } from '../server/migrate-web.mjs';
 import { createSession } from '../server/auth.mjs';
 
-test('real PostgreSQL HTTP flow: identity, saved membership, access denial and restart persistence', {
-  skip: !process.env.HOSTING_TEST_DATABASE_URL,
+const mysql = process.env.HOSTING_TEST_MYSQL === 'true';
+test(`real ${mysql ? 'MySQL' : 'PostgreSQL'} HTTP flow: identity, saved membership, access denial and restart persistence`, {
+  skip: !mysql && !process.env.HOSTING_TEST_DATABASE_URL,
   timeout: 60000,
 }, async () => {
-  const pool=createWebPool({ WEB_DATABASE_URL:process.env.HOSTING_TEST_DATABASE_URL });
+  const pool=createWebPool(mysql ? {...process.env, WEB_DATABASE_DRIVER:'mysql'} : { WEB_DATABASE_URL:process.env.HOSTING_TEST_DATABASE_URL });
   const client=await pool.connect();
   try { await migrateWebDatabase(client); } finally { client.release(); }
   const nonce=randomUUID();
@@ -26,8 +27,10 @@ test('real PostgreSQL HTTP flow: identity, saved membership, access denial and r
   const origin=`http://127.0.0.1:${port}`;
   let child, log='';
   const environment={...process.env,DEPLOYMENT_MODE:'production',PORT:String(port),APP_ORIGIN:'https://platform.test',
+    WEB_DATABASE_DRIVER:mysql?'mysql':'postgres', WEB_STORAGE_DRIVER:mysql?'mysql':'s3', WEB_DATABASE_SETUP:'false',
     WEB_DATABASE_URL:process.env.HOSTING_TEST_DATABASE_URL,WEB_DATABASE_SSL:'disable',ENABLE_DOMAIN_BACKEND:'false',
     WEB_OIDC_ISSUER:'https://test-issuer.invalid',WEB_OIDC_CLIENT_ID:'test-client',WEB_OIDC_CLIENT_SECRET:'test-only',
+    WEB_OIDC_GOOGLE_CONNECTION:'google-oauth2',WEB_OIDC_EMAIL_CONNECTION:'Username-Password-Authentication',
     WEB_STORAGE_BUCKET:'test-only',WEB_STORAGE_REGION:'auto',WEB_STORAGE_ACCESS_KEY_ID:'test-only',WEB_STORAGE_SECRET_ACCESS_KEY:'test-only'};
   async function start() {
     child=spawn(process.execPath,['server.mjs'],{cwd:fileURLToPath(new URL('../',import.meta.url)),env:environment,stdio:['ignore','pipe','pipe']});
@@ -52,6 +55,9 @@ test('real PostgreSQL HTTP flow: identity, saved membership, access denial and r
   }
   try {
     await start();
+    const signin=await fetch(`${origin}/auth/signin?return_to=%2Faccount`);
+    assert.equal(signin.status,200);
+    const signinHtml=await signin.text(); assert.ok(signinHtml.includes('method=google')); assert.ok(signinHtml.includes('method=email'));
     assert.equal((await fetch(`${origin}/api/account`,{headers:{'oai-authenticated-user-email':`${nonce}@test.invalid`}})).status,401);
     assert.equal((await request('/api/account','PUT',{memberships:['expert']},token,'https://evil.test')).status,403);
     assert.equal((await request('/api/account')).status,200);
@@ -62,6 +68,14 @@ test('real PostgreSQL HTTP flow: identity, saved membership, access denial and r
     const profile={membershipCode:'expert',data:{firstName:'قيمة محفوظة'},privacy:{},records:{},currentStep:1,lifecycleStatus:'draft'};
     const save=await request('/api/membership-profiles','PUT',{profiles:[profile]});
     assert.equal(save.status,200,JSON.stringify(save));
+    let documentId;
+    if(mysql) {
+      const form=new FormData(); form.set('category','CV'); form.set('confidentiality','PRIVATE');
+      form.append('files',new Blob(['%PDF-1.4\nprivate test document'],{type:'application/pdf'}),'test.pdf');
+      const upload=await fetch(`${origin}/api/documents`,{method:'POST',headers:{Origin:'https://platform.test',Cookie:`__Host-eim_session=${token}`},body:form});
+      const result=await upload.json(); assert.equal(upload.status,201,JSON.stringify(result));
+      documentId=result.uploaded[0].documentId;
+    }
     await stop();await start();
     const restored=await request('/api/membership-profiles');
     assert.equal(restored.status,200,JSON.stringify(restored));
@@ -69,6 +83,11 @@ test('real PostgreSQL HTTP flow: identity, saved membership, access denial and r
     const separate=await request('/api/membership-profiles','GET',undefined,other);
     assert.equal(separate.status,200,JSON.stringify(separate));
     assert.equal(separate.data.profiles.length,0);
+    if(documentId) {
+      const download=await request(`/api/documents/${documentId}`);
+      assert.equal(download.status,200); assert.equal(download.data,'%PDF-1.4\nprivate test document');
+      assert.equal((await request(`/api/documents/${documentId}`,'GET',undefined,other)).status,403);
+    }
     assert.equal((await request('/api/party-profile','PATCH',{partyId:restored.data.activePartyId},other)).status,403);
     const logout=await request('/auth/signout','POST');
     // The redirect clears the browser-local draft page; database session is revoked.

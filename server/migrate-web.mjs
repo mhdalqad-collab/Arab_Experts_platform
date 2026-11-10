@@ -1,10 +1,12 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { translateSql } from './database.mjs';
+import { migrateMysqlDatabase } from './migrate-mysql.mjs';
 
 export const WEB_SCHEMA_VERSION = '0021_dapper_otto_octavius.sql';
 
 export async function migrateWebDatabase(client) {
+  if (client.dialect === 'mysql') return migrateMysqlDatabase(client, WEB_SCHEMA_VERSION);
   const directory = new URL('../drizzle/', import.meta.url);
   const files = (await readdir(directory)).filter(name => /^\d+.*\.sql$/.test(name)).sort();
   await client.query('BEGIN');

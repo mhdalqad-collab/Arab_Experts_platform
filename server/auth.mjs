@@ -22,6 +22,12 @@ export function sessionCookieName() {
 export function readCookie(header, name) {
   return String(header || '').split(';').map(value => value.trim()).find(value => value.startsWith(`${name}=`))?.slice(name.length + 1) || '';
 }
+export function loginConnection(method, environment = process.env) {
+  if (!method) return undefined;
+  const connections = { google: environment.WEB_OIDC_GOOGLE_CONNECTION, email: environment.WEB_OIDC_EMAIL_CONNECTION };
+  if (!Object.hasOwn(connections, method) || !connections[method]) throw new Error('Login method unavailable');
+  return connections[method];
+}
 function cookie(name, value, maxAge) {
   return `${name}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${process.env.APP_ORIGIN?.startsWith('https://') ? '; Secure' : ''}`;
 }
@@ -42,7 +48,10 @@ export async function createSession(pool, issuer, claims) {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    await client.query('SELECT pg_advisory_xact_lock(hashtext($1))', [`${issuer}:${claims.sub}`]);
+    if (pool.dialect === 'mysql') {
+      const lock = await client.query('SELECT GET_LOCK($1, 10) AS acquired', [tokenHash(`${issuer}:${claims.sub}`)]);
+      if (Number(lock.rows[0]?.acquired) !== 1) throw new Error('Identity lock unavailable');
+    } else await client.query('SELECT pg_advisory_xact_lock(hashtext($1))', [`${issuer}:${claims.sub}`]);
     const existing = await client.query('SELECT account_id FROM web_identities WHERE issuer=$1 AND subject=$2', [issuer, claims.sub]);
     let accountId = existing.rows[0]?.account_id;
     if (!accountId) {
@@ -60,6 +69,23 @@ export async function createSession(pool, issuer, claims) {
     await client.query('DELETE FROM web_sessions WHERE expires_at<now()');
     await client.query('COMMIT');
     return token;
+  } catch (error) { await client.query('ROLLBACK'); throw error; }
+  finally {
+    try { if (pool.dialect === 'mysql') await client.query('SELECT RELEASE_LOCK($1)', [tokenHash(`${issuer}:${claims.sub}`)]); }
+    finally { client.release(); }
+  }
+}
+
+export async function consumeAuthTransaction(pool, hash, state) {
+  if (pool.dialect !== 'mysql') return pool.query(`DELETE FROM web_auth_transactions
+    WHERE token_hash=$1 AND state=$2 AND expires_at>now() RETURNING *`, [hash, state]);
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const result = await client.query('SELECT * FROM web_auth_transactions WHERE token_hash=$1 AND state=$2 AND expires_at>now() FOR UPDATE', [hash, state]);
+    if (result.rows.length) await client.query('DELETE FROM web_auth_transactions WHERE token_hash=$1', [hash]);
+    await client.query('COMMIT');
+    return result;
   } catch (error) { await client.query('ROLLBACK'); throw error; }
   finally { client.release(); }
 }
@@ -98,6 +124,14 @@ export async function handleAuth(request, response, url) {
       response.writeHead(303, { Location: '/eim/signed-out.html' }).end();
       return true;
     }
+    if (route === '/auth/signin' && !url.searchParams.has('method') && process.env.WEB_OIDC_GOOGLE_CONNECTION && process.env.WEB_OIDC_EMAIL_CONNECTION) {
+      const destination = safeReturnPath(url.searchParams.get('return_to'));
+      const link = method => `/auth/signin?${new URLSearchParams({ method, return_to: destination }).toString().replaceAll('&', '&amp;')}`;
+      response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'" });
+      response.end(`<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>تسجيل الدخول | شبكة الخبراء العرب</title><style>body{font-family:system-ui;background:#f3f7fa;color:#12334c;margin:0;padding:8vh 20px}main{max-width:460px;margin:auto;background:white;padding:32px;border-radius:20px;border:1px solid #d9e3eb}h1{font-size:26px}a{display:block;padding:16px;margin:16px 0;border-radius:10px;text-decoration:none;text-align:center;background:#12334c;color:white}p{line-height:1.8}a:last-child{background:transparent;color:#12334c}</style><main><h1>مرحباً بك في شبكة الخبراء العرب</h1><p>سجّل الدخول أو أنشئ حسابك بالطريقة التي تناسبك.</p><a href="${link('google')}">المتابعة باستخدام Google</a><a href="${link('email')}">البريد الإلكتروني وكلمة المرور</a><p>للحسابات الجديدة، أكّد بريدك الإلكتروني قبل تسجيل الدخول.</p><a href="/">العودة إلى الموقع</a></main></html>`);
+      return true;
+    }
+    const connection = route === '/auth/signin' ? loginConnection(url.searchParams.get('method')) : undefined;
     const config = await oidcConfiguration();
     if (route === '/auth/signin') {
       const verifier = oidc.randomPKCECodeVerifier(), state = oidc.randomState(), nonce = oidc.randomNonce(), token = randomToken();
@@ -106,15 +140,15 @@ export async function handleAuth(request, response, url) {
         VALUES($1,$2,$3,$4,$5,now()+interval '10 minutes')`,
       [tokenHash(token), state, nonce, verifier, safeReturnPath(url.searchParams.get('return_to'))]);
       const redirect = oidc.buildAuthorizationUrl(config, { redirect_uri: `${origin}/auth/callback`, scope: 'openid email profile',
-        code_challenge: await oidc.calculatePKCECodeChallenge(verifier), code_challenge_method: 'S256', state, nonce });
+        code_challenge: await oidc.calculatePKCECodeChallenge(verifier), code_challenge_method: 'S256', state, nonce,
+        ...(connection ? { connection } : {}) });
       response.setHeader('Set-Cookie', cookie(transactionCookie, token, 600));
       response.writeHead(302, { Location: redirect.href }).end();
       return true;
     }
     const transactionToken = readCookie(request.headers.cookie, transactionCookie);
     response.setHeader('Set-Cookie', cookie(transactionCookie, '', 0));
-    const result = await pool.query(`DELETE FROM web_auth_transactions
-      WHERE token_hash=$1 AND state=$2 AND expires_at>now() RETURNING *`, [tokenHash(transactionToken), url.searchParams.get('state')]);
+    const result = await consumeAuthTransaction(pool, tokenHash(transactionToken), url.searchParams.get('state'));
     const flow = result.rows[0];
     if (!flow) throw new Error('Invalid or expired login');
     const tokens = await oidc.authorizationCodeGrant(config, new URL(`/auth/callback${url.search}`, origin), {

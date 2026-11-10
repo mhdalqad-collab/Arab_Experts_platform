@@ -1,0 +1,6299 @@
+[
+  {
+    "name": "account_audit_events",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "event_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "event_type",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "actor_email",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "occurred_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "account_memberships",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "membership_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "membership_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'DRAFT'",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "is_active",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "true",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "account_memberships_account_code_uq",
+        "unique": true,
+        "columns": [
+          "account_id",
+          "membership_code"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "account_notifications",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "notification_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "profile_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "notification_type",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "title",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "message",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "is_read",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "false",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "read_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "entity_type",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "entity_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "action_route",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "priority",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'NORMAL'",
+        "pk": 0
+      },
+      {
+        "cid": 13,
+        "name": "due_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "membership_profiles",
+        "from": "profile_id",
+        "to": "profile_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "account_party_links",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "account_party_link_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "relationship_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'OWNER'",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "is_primary",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "false",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'ACTIVE'",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "account_party_links_account_party_uq",
+        "unique": true,
+        "columns": [
+          "account_id",
+          "party_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "account_roles",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "account_role_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "role_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "granted_by",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "granted_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "is_active",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "true",
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "account_roles_account_role_uq",
+        "unique": true,
+        "columns": [
+          "account_id",
+          "role_code"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "accounts",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "email",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "display_name",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "client_type",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'ACTIVE'",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "accounts_email_uq",
+        "unique": true,
+        "columns": [
+          "email"
+        ]
+      }
+    ],
+    "foreignKeys": []
+  },
+  {
+    "name": "client_need_versions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "version_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "need_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "snapshot_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "actor_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "client_need_versions_need_revision_uq",
+        "unique": true,
+        "columns": [
+          "need_id",
+          "revision"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "actor_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "client_needs",
+        "from": "need_id",
+        "to": "need_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "client_needs",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "need_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "client_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "title",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "output_type",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "service_type",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'DRAFT'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "fingerprint_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "created_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "created_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "client_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "complaint_transitions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "transition_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "complaint_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "sequence",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "from_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "to_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "action_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "note",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "actor_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "occurred_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "complaint_transitions_sequence_uq",
+        "unique": true,
+        "columns": [
+          "complaint_id",
+          "sequence"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "actor_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "quality_complaints",
+        "from": "complaint_id",
+        "to": "complaint_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "corrective_actions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "corrective_action_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "complaint_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "action_text",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "owner_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "due_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'OPEN'",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "completion_evidence",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "completed_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "owner_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "quality_complaints",
+        "from": "complaint_id",
+        "to": "complaint_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "document_verifications",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "verification_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "document_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'PENDING'",
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "submitted_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "reviewer_account_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "confidence_score",
+        "type": "INTEGER",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "decision_reason",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "submitted_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "decided_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "reviewer_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "submitted_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "professional_documents",
+        "from": "document_id",
+        "to": "document_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "matching_results",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "result_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "run_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "candidate_ref",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "candidate_party_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "total_score",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "eligible",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "component_scores_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "contributions_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "failed_mandatory_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "candidate_snapshot_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "rank",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "matching_results_run_candidate_uq",
+        "unique": true,
+        "columns": [
+          "run_id",
+          "candidate_ref"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "parties",
+        "from": "candidate_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "matching_runs",
+        "from": "run_id",
+        "to": "run_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "matching_runs",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "run_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "need_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "client_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "fingerprint_version",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "fingerprint_snapshot_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "weights_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "mandatory_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'COMPLETED'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "created_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "created_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "client_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "client_needs",
+        "from": "need_id",
+        "to": "need_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "membership_profile_versions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "version_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "profile_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "snapshot_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "actor_email",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'AUTOSAVE'",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "membership_profile_versions_profile_revision_uq",
+        "unique": true,
+        "columns": [
+          "profile_id",
+          "revision"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "membership_profiles",
+        "from": "profile_id",
+        "to": "profile_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "membership_profiles",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "profile_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "membership_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "privacy_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "records_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "current_step",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "0",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "lifecycle_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'draft'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "membership_profiles_party_code_uq",
+        "unique": true,
+        "columns": [
+          "party_id",
+          "membership_code"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "membership_reviews",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "review_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "profile_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "reviewer_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'OPEN'",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "decision_code",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "decision_reason",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "opened_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "decided_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "reviewer_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "membership_profiles",
+        "from": "profile_id",
+        "to": "profile_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "membership_transitions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "transition_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "request_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "profile_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "from_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "to_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "action_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "actor_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "actor_role",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "occurred_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "membership_transitions_request_uq",
+        "unique": true,
+        "columns": [
+          "request_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "actor_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "membership_profiles",
+        "from": "profile_id",
+        "to": "profile_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "organization_invitations",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "invitation_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "organization_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "invited_email",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "role_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'PENDING'",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "invited_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "accepted_by_account_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "expires_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "responded_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "cancelled_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "accepted_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "invited_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "organizations",
+        "from": "organization_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "organizations",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "legal_name_ar",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "legal_name_en",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "legal_entity_type",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "registration_number",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "registration_country_code",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "website_url",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "organizations_registration_uq",
+        "unique": true,
+        "columns": [
+          "registration_country_code",
+          "registration_number"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "parties",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "party_type",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "display_name_ar",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "display_name_en",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'ACTIVE'",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "row_version",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": []
+  },
+  {
+    "name": "party_contacts",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "party_contact_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "contact_type",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "contact_value",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "normalized_value",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "is_primary",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "false",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "is_verified",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "false",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "visibility",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'PRIVATE'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "party_contacts_party_type_value_uq",
+        "unique": true,
+        "columns": [
+          "party_id",
+          "contact_type",
+          "normalized_value"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "party_membership_links",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "party_membership_link_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "account_membership_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "relationship_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'OWNER'",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "party_membership_links_party_membership_uq",
+        "unique": true,
+        "columns": [
+          "party_id",
+          "account_membership_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "account_memberships",
+        "from": "account_membership_id",
+        "to": "membership_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "party_memberships",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "party_membership_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "membership_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "lifecycle_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'DRAFT'",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "is_active",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "true",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "party_memberships_party_code_uq",
+        "unique": true,
+        "columns": [
+          "party_id",
+          "membership_code"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "party_privacy_rules",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "party_privacy_rule_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "field_key",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "visibility",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'PRIVATE'",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "consent_granted",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "false",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "party_privacy_rules_party_field_uq",
+        "unique": true,
+        "columns": [
+          "party_id",
+          "field_key"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "persons",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "full_name_ar",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "full_name_en",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "nationality_country_code",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "residence_country_code",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "professional_document_versions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "document_version_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "document_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "version_number",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "storage_object_key",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "original_file_name",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "media_type",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "size_bytes",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "sha256_hash",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "scan_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'PENDING'",
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "uploaded_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "professional_document_versions_party_hash_guard_uq",
+        "unique": true,
+        "columns": [
+          "document_id",
+          "sha256_hash"
+        ]
+      },
+      {
+        "name": "professional_document_versions_document_version_uq",
+        "unique": true,
+        "columns": [
+          "document_id",
+          "version_number"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "uploaded_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "professional_documents",
+        "from": "document_id",
+        "to": "document_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "professional_documents",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "document_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "membership_code",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "category_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "title",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "confidentiality",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'PRIVATE'",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "verification_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'NOT_SUBMITTED'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "current_version",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'ACTIVE'",
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "created_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "archived_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "professional_documents_party_hash_uq",
+        "unique": true,
+        "columns": [
+          "party_id",
+          "document_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "created_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_change_order_transitions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "transition_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "change_order_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "sequence",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "from_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "to_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "action_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "actor_role",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "actor_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "note",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "occurred_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_change_order_transitions_sequence_uq",
+        "unique": true,
+        "columns": [
+          "change_order_id",
+          "sequence"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "actor_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "project_change_orders",
+        "from": "change_order_id",
+        "to": "change_order_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_change_orders",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "change_order_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'REQUESTED'",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "requested_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "approved_by_account_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "approved_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "requested_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_closures",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "closure_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'SUBMITTED'",
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "report_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "submitted_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "accepted_by_account_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "submitted_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "accepted_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_closures_project_uq",
+        "unique": true,
+        "columns": [
+          "project_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "accepted_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "submitted_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_completion_certificates",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "certificate_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "closure_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "snapshot_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "issued_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_completion_certificates_code_uq",
+        "unique": true,
+        "columns": [
+          "public_code"
+        ]
+      },
+      {
+        "name": "project_completion_certificates_project_uq",
+        "unique": true,
+        "columns": [
+          "project_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "project_closures",
+        "from": "closure_id",
+        "to": "closure_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_deliverable_documents",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "deliverable_document_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "deliverable_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "document_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "submission_revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "linked_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "linked_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_deliverable_documents_document_uq",
+        "unique": true,
+        "columns": [
+          "deliverable_id",
+          "document_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "linked_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "professional_documents",
+        "from": "document_id",
+        "to": "document_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "project_deliverables",
+        "from": "deliverable_id",
+        "to": "deliverable_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 3,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_deliverables",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "deliverable_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "milestone_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "title",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'PLANNED'",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "submission_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "review_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "submitted_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "reviewed_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "project_milestones",
+        "from": "milestone_id",
+        "to": "milestone_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_invoices",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "invoice_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "schedule_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'ISSUED'",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "amount_minor",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "currency",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "details_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "issued_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "approved_by_account_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "issued_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "approved_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "paid_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 13,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_invoices_public_code_uq",
+        "unique": true,
+        "columns": [
+          "public_code"
+        ]
+      },
+      {
+        "name": "project_invoices_schedule_uq",
+        "unique": true,
+        "columns": [
+          "schedule_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "approved_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "issued_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 3,
+        "seq": 0,
+        "table": "project_payment_schedules",
+        "from": "schedule_id",
+        "to": "schedule_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_milestones",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "milestone_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "sequence",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "title",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "weight",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "due_date",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'PLANNED'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "completed_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_payment_schedules",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "schedule_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "milestone_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "sequence",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "percentage",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "amount_minor",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "currency",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'LOCKED'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "eligible_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_payment_schedules_milestone_uq",
+        "unique": true,
+        "columns": [
+          "milestone_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "project_milestones",
+        "from": "milestone_id",
+        "to": "milestone_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_payments",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "payment_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "invoice_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "amount_minor",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "currency",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "method",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "external_reference",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'RECORDED'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "recorded_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "recorded_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_payments_public_code_uq",
+        "unique": true,
+        "columns": [
+          "public_code"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "recorded_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "project_invoices",
+        "from": "invoice_id",
+        "to": "invoice_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_progress_report_transitions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "transition_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "progress_report_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "sequence",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "from_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "to_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "actor_role",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "actor_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "note",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "occurred_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_progress_report_transitions_sequence_uq",
+        "unique": true,
+        "columns": [
+          "progress_report_id",
+          "sequence"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "actor_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "project_progress_reports",
+        "from": "progress_report_id",
+        "to": "progress_report_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_progress_report_versions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "version_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "progress_report_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "created_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_progress_report_versions_revision_uq",
+        "unique": true,
+        "columns": [
+          "progress_report_id",
+          "revision"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "created_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "project_progress_reports",
+        "from": "progress_report_id",
+        "to": "progress_report_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_progress_reports",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "progress_report_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "period_start",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "period_end",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "declared_progress",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'SUBMITTED'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "current_revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "submitted_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "reviewed_by_account_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "submitted_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "reviewed_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 13,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_progress_reports_period_uq",
+        "unique": true,
+        "columns": [
+          "project_id",
+          "period_start",
+          "period_end"
+        ]
+      },
+      {
+        "name": "project_progress_reports_public_code_uq",
+        "unique": true,
+        "columns": [
+          "public_code"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "reviewed_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "submitted_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_register_items",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "register_item_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "item_type",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "title",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "description",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "priority",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'MEDIUM'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "owner_role",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "due_date",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "raised_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "closed_by_account_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 13,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 14,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 15,
+        "name": "closed_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_register_items_public_code_uq",
+        "unique": true,
+        "columns": [
+          "public_code"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "closed_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "raised_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_register_transitions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "transition_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "register_item_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "sequence",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "from_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "to_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "actor_role",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "actor_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "note",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "occurred_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_register_transitions_sequence_uq",
+        "unique": true,
+        "columns": [
+          "register_item_id",
+          "sequence"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "actor_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "project_register_items",
+        "from": "register_item_id",
+        "to": "register_item_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "project_reviews",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "review_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "reviewer_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "subject_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "reviewer_role",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "scores_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "comment",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'SUBMITTED'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "submitted_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "submitted_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "project_reviews_project_role_uq",
+        "unique": true,
+        "columns": [
+          "project_id",
+          "reviewer_role"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "submitted_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "subject_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "parties",
+        "from": "reviewer_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 3,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "quality_complaints",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "complaint_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "complainant_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "respondent_party_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "review_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "category",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "priority",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'NORMAL'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'SUBMITTED'",
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "subject",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "statement",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "resolution",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 13,
+        "name": "submitted_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 14,
+        "name": "assigned_to_account_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 15,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 16,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 17,
+        "name": "closed_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "quality_complaints_public_code_uq",
+        "unique": true,
+        "columns": [
+          "public_code"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "assigned_to_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "accounts",
+        "from": "submitted_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "project_reviews",
+        "from": "review_id",
+        "to": "review_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 3,
+        "seq": 0,
+        "table": "service_projects",
+        "from": "project_id",
+        "to": "project_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 4,
+        "seq": 0,
+        "table": "parties",
+        "from": "respondent_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 5,
+        "seq": 0,
+        "table": "parties",
+        "from": "complainant_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "reputation_snapshots",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "snapshot_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "composite_score",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "confidence_score",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "sample_count",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "dimensions_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "methodology_version",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "generated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "reputation_snapshots_party_uq",
+        "unique": true,
+        "columns": [
+          "party_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "review_disputes",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "dispute_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "review_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "raised_by_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'OPEN'",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "reason_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "statement",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "resolution",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "resolved_by_account_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "raised_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "resolved_at",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "review_disputes_review_open_uq",
+        "unique": true,
+        "columns": [
+          "review_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "resolved_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "raised_by_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "project_reviews",
+        "from": "review_id",
+        "to": "review_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "selection_decisions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "decision_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "run_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "need_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "client_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "candidate_ref",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "reason",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'SELECTED'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "decided_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "decided_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "decided_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "client_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "client_needs",
+        "from": "need_id",
+        "to": "need_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 3,
+        "seq": 0,
+        "table": "matching_runs",
+        "from": "run_id",
+        "to": "run_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "service_contract_signatures",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "signature_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "contract_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "party_role",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "declaration",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "signed_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "service_contract_signatures_contract_role_uq",
+        "unique": true,
+        "columns": [
+          "contract_id",
+          "party_role"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "service_contracts",
+        "from": "contract_id",
+        "to": "contract_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "service_contract_transitions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "transition_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "contract_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "from_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "to_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "actor_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "note",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "occurred_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "service_contract_transitions_contract_revision_uq",
+        "unique": true,
+        "columns": [
+          "contract_id",
+          "revision"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "actor_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "service_contracts",
+        "from": "contract_id",
+        "to": "contract_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "service_contracts",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "contract_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "proposal_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "request_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "client_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "provider_party_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'DRAFT'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "created_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "service_contracts_public_code_uq",
+        "unique": true,
+        "columns": [
+          "public_code"
+        ]
+      },
+      {
+        "name": "service_contracts_proposal_uq",
+        "unique": true,
+        "columns": [
+          "proposal_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "created_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "provider_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "parties",
+        "from": "client_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 3,
+        "seq": 0,
+        "table": "service_requests",
+        "from": "request_id",
+        "to": "request_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 4,
+        "seq": 0,
+        "table": "service_proposals",
+        "from": "proposal_id",
+        "to": "proposal_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "service_projects",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "project_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "contract_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "client_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "provider_party_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "title",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'PLANNED'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "progress",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "0",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "created_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "service_projects_public_code_uq",
+        "unique": true,
+        "columns": [
+          "public_code"
+        ]
+      },
+      {
+        "name": "service_projects_contract_uq",
+        "unique": true,
+        "columns": [
+          "contract_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "created_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "provider_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "parties",
+        "from": "client_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 3,
+        "seq": 0,
+        "table": "service_contracts",
+        "from": "contract_id",
+        "to": "contract_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "service_proposal_versions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "version_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "proposal_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "snapshot_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "actor_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "service_proposal_versions_proposal_revision_uq",
+        "unique": true,
+        "columns": [
+          "proposal_id",
+          "revision"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "actor_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "service_proposals",
+        "from": "proposal_id",
+        "to": "proposal_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "service_proposals",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "proposal_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "request_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "need_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "client_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "provider_party_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'DRAFT'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "response_revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "created_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "service_proposals_public_code_uq",
+        "unique": true,
+        "columns": [
+          "public_code"
+        ]
+      },
+      {
+        "name": "service_proposals_request_uq",
+        "unique": true,
+        "columns": [
+          "request_id"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "created_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "provider_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "parties",
+        "from": "client_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 3,
+        "seq": 0,
+        "table": "client_needs",
+        "from": "need_id",
+        "to": "need_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 4,
+        "seq": 0,
+        "table": "service_requests",
+        "from": "request_id",
+        "to": "request_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "service_request_transitions",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "transition_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "request_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "request_key",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "from_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "to_status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "actor_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "note",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "occurred_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "service_request_transitions_request_key_uq",
+        "unique": true,
+        "columns": [
+          "request_id",
+          "request_key"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "actor_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "service_requests",
+        "from": "request_id",
+        "to": "request_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "service_requests",
+    "columns": [
+      {
+        "cid": 0,
+        "name": "request_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "need_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "client_party_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "provider_party_id",
+        "type": "TEXT",
+        "notnull": 0,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "candidate_ref",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "public_code",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "status",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'DRAFT'",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "payload_json",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": "'{}'",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "revision",
+        "type": "INTEGER",
+        "notnull": 1,
+        "default": "1",
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "created_by_account_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "updated_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "service_requests_need_candidate_active_uq",
+        "unique": true,
+        "columns": [
+          "need_id",
+          "candidate_ref"
+        ]
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "accounts",
+        "from": "created_by_account_id",
+        "to": "account_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 1,
+        "seq": 0,
+        "table": "parties",
+        "from": "provider_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 2,
+        "seq": 0,
+        "table": "parties",
+        "from": "client_party_id",
+        "to": "party_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      },
+      {
+        "id": 3,
+        "seq": 0,
+        "table": "client_needs",
+        "from": "need_id",
+        "to": "need_id",
+        "on_update": "NO ACTION",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  }
+]

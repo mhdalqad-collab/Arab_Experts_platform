@@ -14,6 +14,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  mysql:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: local-test-only
+          MYSQL_DATABASE: arab_experts_test
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd "mysqladmin ping -h localhost -plocal-test-only"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 30
+    env:
+      HOSTING_TEST_MYSQL: 'true'
+      DB_HOST: 127.0.0.1
+      DB_PORT: '3306'
+      DB_NAME: arab_experts_test
+      DB_USER: root
+      DB_PASSWORD: local-test-only
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+          cache: npm
+      - run: npm ci
+      - run: python3 scripts/generate-mysql-schema.py --check
+      - run: node --test tests/hosting-mysql.test.mjs
+      - run: npm run build
+      - run: node --test tests/production-database-http.test.mjs
+
   quality:
     runs-on: ubuntu-24.04
     timeout-minutes: 30

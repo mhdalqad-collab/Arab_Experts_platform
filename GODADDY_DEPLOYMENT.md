@@ -1,14 +1,14 @@
 # GoDaddy Node.js deployment
 
 Target confirmed: GoDaddy Node.js Hosting, in a separate app from AES.
-Status: Node runtime implemented and locally tested; hosted services and GoDaddy deployment are pending.
+The app is published in evaluation mode. For the included GoDaddy MySQL database, private uploads and Google plus email/password login, follow [GoDaddy activation](docs/GODADDY_ACTIVATION.md) and `godaddy-mysql.env.example`. Live identity-provider configuration and end-to-end acceptance are still required.
 
 ## What changed
 
 - Root `npm run build` builds the EIM assets, backend TypeScript and a standard Next.js production app. `npm start` launches one public HTTP server on GoDaddy's `PORT`, bound to `0.0.0.0`.
-- All 22 web API route files use a PostgreSQL adapter instead of Cloudflare Worker bindings. Parameterized queries and atomic batches preserve the current API contracts.
+- All 22 web API route files use a PostgreSQL or MySQL adapter instead of Cloudflare Worker bindings. Parameterized queries and atomic batches preserve the current API contracts.
 - The 22 original web-schema migrations are applied to an isolated PostgreSQL schema, `eim_web`, with checksums, a transaction and an advisory lock. Reruns do not reset saved content.
-- Private document bytes use an S3-compatible bucket. Metadata stays in PostgreSQL. Existing download authorization and upload-failure cleanup are retained. Do not enable public bucket access.
+- Private document bytes can use an S3-compatible bucket or the included MySQL database. Existing download authorization and upload-failure cleanup are retained. Do not enable public bucket access.
 - OIDC login replaces trusted platform identity headers. It uses authorization code flow, PKCE, state, nonce and ID-token signature checks. Accounts bind to issuer plus subject; an email collision is rejected rather than silently linking identities.
 - Browser sessions are random opaque cookies, hashed in PostgreSQL, expire after eight hours and are revoked on logout. Session cookies use HttpOnly, SameSite=Lax and Secure on HTTPS. Cookie-authenticated writes require the configured exact Origin.
 - Build-time Google Fonts downloads were removed. The EIM application's existing assets and styles remain; the account shell uses the browser font stack.
@@ -50,7 +50,7 @@ A working deployment requires these separate services. Their credentials must be
 
 ### Database setup
 
-Use a separate PostgreSQL database. This repository does not assume GoDaddy provides PostgreSQL as part of the hosting subscription.
+For the included GoDaddy MySQL database, use [the activation guide](docs/GODADDY_ACTIVATION.md). The following instructions are the alternative PostgreSQL setup.
 
 From a trusted operator environment, install dependencies and set `WEB_DATABASE_MIGRATION_URL` to a schema-owner connection, then run:
 
